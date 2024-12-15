@@ -1,0 +1,375 @@
+.board-header {
+    padding-right: 1rem;
+}
+
+.board-header-container {
+    max-width: 1056px;
+    height: 73px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.add-task-rsponsive-btn {
+    display: none;
+}
+
+.action-container {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.board-title h1 {
+    margin: 0px;
+    font-family: 'Inter', sans-serif;
+    font-size: 61px;
+    line-height: 73px;
+    font-weight: 700;
+}
+
+.search-bar {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+
+.action-container form {
+    width: 312px;
+    height: 48px;
+    padding: 8px 16px;
+    background-color: #ffff;
+    display: flex;
+    justify-content: space-evenly;
+    gap: 10px;
+    border: 1px solid #A8A8A8;
+    border-radius: 10px;
+}
+
+.action-container form input,
+.action-container form button {
+    height: 100%;
+}
+
+.action-container form input {
+    background-color: #ffff;
+    border: none;
+    outline: none;
+    padding: 0px;
+    flex-grow: 1;
+}
+
+.action-container form input[type="text"] {
+    font-size: 20px;
+}
+
+.action-container form input::placeholder {
+    color: #D1D1D1;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+.action-container form button {
+    cursor: pointer;
+    padding: 0px;
+    background-color: #ffff;
+    border: none;
+    outline: none;
+}
+
+.action-container form button img {
+    color: #2A3647;
+}
+
+.action-container form button img:hover {
+    border: none;
+    border-radius: 50px;
+    background-color: #D9D9D9;
+}
+
+.add-task-button {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    width: 160px;
+    height: 48px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 25.2px;
+    color: #FFFFFF;
+    padding: 8px 16px;
+    background-color: #2A3647;
+    border: 1px solid #2A3647;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 100ms ease-in-out;
+}
+
+.add-task-button:hover {
+    border: none;
+    background-color: #0D99FF;
+    transform: translateX(-1px);
+    box-shadow: -2px 0px 6px 0px rgb(0, 0, 0, 0.5);
+}
+
+.buttonsAndInfotext {
+    position: relative;
+    width: auto;
+    margin-top: 25px !important;
+}
+
+.CompleteContent {
+    gap: 20px;
+}
+
+.Content {
+    gap: 30px;
+}
+
+.Content2 {
+    top: 0px;
+    margin-top: 0px !important;
+}
+
+.categories {
+    width: 450px;
+    top: 538px;
+}
+
+
+.ContainerForAllPossibleContacts {
+    position: relative;
+    top: 0 !important;
+}
+
+.assignedToContainerInputEdit {
+    width: 100%;
+}
+
+/* BOARD NAV */
+
+.board-nav-bar-container {
+    width: 1208px;
+    height: 24px;
+    margin-top: 54px;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: 60px;
+}
+
+.board-nav-item {
+    width: 244px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 24px;
+    color: #42526E;
+
+}
+
+.board-nav-item button {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+.responsive-board-nav-item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.responsive-board-nav-item {
+    width: 80%;
+    margin: 1.1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 27px;
+    font-weight: 700;
+    line-height: 32.4px;
+    color: #42526E;
+    display: none;
+
+}
+
+.responsive-board-nav-item button {
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+}
+
+
+/* BOARD DISTRIBUTION */
+
+.board-distribution-container {
+    width: 1208px;
+    height: 688px;
+    margin-top: 1.25rem;
+    margin-bottom: 7.5rem;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    /* display: flex;
+    align-items: center; */
+    gap: 16px;
+}
+
+.board-distribution-colum {
+    width: auto;
+    min-height: 38rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    /* padding: 0 64px; */
+    /* border: 1px solid black; */
+}
+
+.dragAreaHighlight {
+
+    background-color: #d4d4d4;
+    border-radius: 1.5rem;
+}
+
+/* CARDS */
+
+.card-container {
+    width: 100%;
+    min-height: 262px;
+    padding: 16px;
+    background-color: white;
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+}
+
+.card-label {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+    padding: 4px 16px;
+    color: #FFFFFF;
+    background-color: #0038FF;
+    border: none;
+    border-radius: 8px;
+}
+
+.card-title {
+    color: #2A3647;
+    width: 220px;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19..2px;
+}
+
+.card-content {
+    color: #A8A8A8;
+    width: 220px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19..2px;
+}
+
+.progress-bar-container {
+    width: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.progress-bar {
+    width: 128px;
+    height: 8px;
+    background-color: #F4F4F4;
+    border: none;
+    border-radius: 8px;
+}
+
+.progress-done {
+    height: 100%;
+    width: 0%;
+    background-color: #4589FF;
+    border: none;
+    border-radius: 8px;
+    transition: 1s ease 0.3s;
+}
+
+.subtasks-container {
+    color: #000000;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 14.4px;
+}
+
+.card-footer {
+    width: 220px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.profiles {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.profile {
+    display: inline-block;
+    text-align: center;
+    color: #FFFFFF;
+    background-color: #6e52FF;
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 32px;
+    border-radius: 45%;
+    margin-left: -5px;
+}
+
+.profile:first-child {
+    margin: 0;
+}
+
+.priority-container {
+    display: flex;
+    align-items: center;
+    width: 32px;
+    height: 32px;
+}
+
+.priority-container img {
+    width: 100%;
+}
+
+.no-task-card-container {
+    width: 252px;
+    height: 48px;
+    text-align: center;
+    color: #A8A8A8;
+    background-color: #E7E7E7;
+    border: 1px dotted #A8A8A8;
+    border-radius: 24px;
+}
+
+.no-task-card-container h3 {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 19.2px;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: flex;
+}

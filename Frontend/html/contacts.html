@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Contacts</title>
+    <link rel="shortcut icon" href="/Frontend/assets/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/Frontend/style/fonts.css">
+    <link rel="stylesheet" href="/Frontend/style/style.css">
+    <link rel="stylesheet" href="/Frontend/style/desktop_template.css">
+    <link rel="stylesheet" href="/Frontend/style/contacts.css">
+    <link rel="stylesheet" href="/Frontend/style/contacts-responsive.css">
+    <link rel="stylesheet" href="/Frontend/style/desktop-template-responsive.css">
+    <script src="/Frontend/js/server.js"></script>
+    <script src="/Frontend/js/script.js"></script>
+    <script src="/Frontend/js/contacts_array_storage.js"></script>
+    <script src="/Frontend/js/contacts_render.js"></script>
+    <script src="/Frontend/js/contacts.js"></script>
+</head>
+
+<body onload="initContacts()">
+    <div w3-include-html="/Frontend/assets/templates/desktop_template.html"></div>
+    <div class="responsiveContent">
+        <div id="contactOverview">
+            <div id="contactOverviewContent">
+                <!-- <button id="addContactButton" onclick="addContact()">Add new contact <img
+                        src="/Frontend/assets/img/add-contact.png" alt="add contact image"></button> -->
+            </div>
+        </div>
+        <div id="contactPageRightHeader">
+            <p id="contactPageHeaderName">Contacts</p>
+            <div class="vertical"></div>
+            <p id="contactPageHeaderText">Better with a team</p>
+        </div>
+        <div id="contactPageRightHeaderResponsive">
+            <p id="contactPageHeaderNameResponsive">Contacts</p>
+            <p id="contactPageHeaderTextResponsive">Better with a team</p>
+            <div class="horizontal"></div>
+        </div>
+        <button onclick="returnToContactBook()" id="responsiveContactDetailBack"><img
+                src="/Frontend/assets/img/arrow-left-line.png" alt="arrow left" class="arrow"></button>
+        <div id="contactDetailsView"></div>
+    </div>
+    <div id="confirmationMessage" class="confirmationMessage">
+        Contact successfully created
+    </div>
+    <div id="addContactOverlay">
+        <div id="addContactPopUp">
+            <button class="closeContactButton" type="button" onclick="closePopUp()">
+                <img src="/Frontend/assets/img/cancel_dark.png" alt="close icon">
+            </button>
+            <div class="contactLeft">
+                <img class="contactPopUpImage" src="/Frontend/assets/img/join-logo.png" alt="join logo">
+                <div class="contactLeftText">
+                    <p class="contactHeadline">Add contact</p>
+                    <p id="addContactHeadlineText">Tasks are better with a team!</p>
+                    <div class="contactHeaderLine"></div>
+                </div>
+            </div>
+            <img id="addContactEmptyProfile" src="/Frontend/assets/img/new-contact-icon.png" alt="new contact icon">
+            <div class="contactRight">
+                <form class="contactForm" onsubmit="createContact(); return false;">
+                    <div class="contactFormInput">
+                        <div class="contactInputFields">
+                            <input type="text" id="name" name="name" pattern="[a-zA-Z ]*" placeholder="Name" required>
+                            <img src="/Frontend/assets/img/person.png" alt="profile icon">
+                        </div>
+                        <div class="contactInputFields">
+                            <input type="email" id="email" name="email" placeholder="Email" required>
+                            <img src="/Frontend/assets/img/mail.png" alt="email icon">
+                        </div>
+                        <div class="contactInputFields">
+                            <input type="tel" id="phone" name="phone" pattern="[0-9+]+" placeholder="Phone" required>
+                            <img src="/Frontend/assets/img/phone-icon.png" alt="phone icon">
+                        </div>
+                    </div>
+                    <div class="contactFormButtons">
+                        <button id="cancelButton" type="button" onclick="closePopUp()">Cancel <img
+                                src="/Frontend/assets/img/cancel_dark.png" alt="cancel icon"></button>
+                        <button id="saveButton" type="submit">Create Contact <img src="/Frontend/assets/img/check.png"
+                                alt="confirm icon"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div id="responsiveAddContactButton" onclick="addContact()">
+        <img src="/Frontend/assets/img/add-contact.png" alt="add contact image">
+    </div>
+    <div id="responsiveEditContactButton" onclick="toggleEditDeleteButtonPopUp()">
+        <img src="/Frontend/assets/img/show-more.png" alt="add contact image">
+    </div>
+    <div id="editDeleteButtonPopUp" class="editDeleteButtonPopUp">
+        <div class="contactEditButton" onclick="editContact()">
+            <img class="contactDetailsNameIcons" src="/Frontend/assets/img/edit-contact.png" alt="edit contact">
+            <p>Edit</p>
+        </div>
+        <div class="contactDeleteButton" onclick="deleteContact()">
+            <img class="contactDetailsNameIcons" src="/Frontend/assets/img/delete-contact.png" alt="delete contact">
+            <p>Delete</p>
+        </div>
+    </div>      
+    <div id="editContactOverlay">
+        <div id="editContactPopUp">
+            <button class="closeContactButton" type="button" onclick="closePopUp()">
+                <img src="/Frontend/assets/img/cancel_dark.png" alt="close icon">
+            </button>
+            <div class="contactLeft">
+                <img class="contactPopUpImage" src="/Frontend/assets/img/join-logo.png" alt="join logo">
+                <p class="contactHeadline">Edit contact</p>
+                <div class="contactHeaderLine"></div>
+            </div>
+            <div id="iconInEditContact"></div>
+            <div class="contactRight">
+                <form class="contactForm" onsubmit="saveEditedContact(); return false;">
+                    <div class="contactFormInput">
+                        <div class="contactInputFields">
+                            <input type="text" id="editName" name="name" placeholder="Name" required>
+                            <img src="/Frontend/assets/img/person.png" alt="profile icon">
+                        </div>
+                        <div class="contactInputFields">
+                            <input type="text" id="editLastname" name="name" placeholder="Lastname" required>
+                            <img src="/Frontend/assets/img/person.png" alt="profile icon">
+                        </div>
+                        <div class="contactInputFields">
+                            <input type="email" id="editEmail" name="email" placeholder="Email" required>
+                            <img src="/Frontend/assets/img/mail.png" alt="email icon">
+                        </div>
+                        <div class="contactInputFields">
+                            <input type="tel" id="editPhone" name="phone" placeholder="Phone" required>
+                            <img src="/Frontend/assets/img/phone-icon.png" alt="phone icon">
+                        </div>
+                    </div>
+                    <div class="contactFormButtons">
+                        <button id="deleteButtonInForm" type="button" onclick="deleteContact()">Delete</button>
+                        <button id="saveEditButton" type="button" onclick="saveEditedContact()">Save <img
+                                src="/Frontend/assets/img/check.png" alt="confirm icon"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

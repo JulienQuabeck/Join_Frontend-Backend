@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Summary</title>
+    <link rel="shortcut icon" href="/Frontend/assets/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/Frontend/style/fonts.css">
+    <link rel="stylesheet" href="/Frontend/style/style.css">
+    <link rel="stylesheet" href="/Frontend/style/desktop_template.css">
+    <!-- <link rel="stylesheet" href="/Frontend/style/mobile_template.css"> -->
+    <link rel="stylesheet" href="/Frontend/style/summary.css">
+    <link rel="stylesheet" href="/Frontend/style/summary-responsive.css">
+    <link rel="stylesheet" href="/Frontend/style/desktop-template-responsive.css">
+    <script src="/Frontend/js/server.js"></script>
+    <script src="/Frontend/js/script.js"></script>
+    <script src="/Frontend/js/summary.js"></script>
+</head>
+<body onload="initSummary()">
+    <div w3-include-html="/Frontend/assets/templates/desktop_template.html"></div>
+    <div class="content-margin">
+        <header class="summary-headlines">
+            <h1>
+                Join 360
+            </h1>
+            <div class="headline-border"></div>
+            <h2>Key metrics at a glance</h2>
+            <div class="mobile-headline-border"></div>
+        </header>
+        <div class="summary-box">
+            <div class="summary-content">
+                <div class="summary-bottom-third">
+                    <a href="board.html" class="to-do-amount"
+                        onmouseenter="changeImageSource('to-do-image', '/Frontend/assets/img/to-do-icon-black.png')"
+                        onmouseleave="changeImageSource('to-do-image', '/Frontend/assets/img/to-do-icon-white.png')">
+                        <div class="to-do-image">
+                            <img id="to-do-image" src="/Frontend/assets/img/to-do-icon-white.png">
+                        </div>
+                        <div>
+                            <h4 id="to-do-amount"></h4>
+                            <h5>To-do</h5>
+                        </div>
+                    </a>
+                    <a href="board.html" class="done-amount"
+                        onmouseenter="changeImageSource('done-image', '/Frontend/assets/img/hook-icon-black.png')"
+                        onmouseleave="changeImageSource('done-image', '/Frontend/assets/img/hook-icon-white.png')">
+                        <div class="done-image">
+                            <img id="done-image" src="/Frontend/assets/img/hook-icon-white.png">
+                        </div>
+                        <div>
+                            <h4 id="done-amount"></h4>
+                            <h5>Done</h5>
+                        </div>
+                    </a>
+                </div>
+                <a href="board.html" class="summary-middle-third">
+                    <div class="upcoming-task">
+                        <div id="upcoming-prio-image-wrapper">
+                            <img id="upcoming-prio-image" src="/Frontend/assets/img/PrioHighWhite.png">
+                        </div>
+                        <div>
+                            <h4 id="upcoming-tasks-amount"></h4>
+                            <h5 id="upcoming-prio"></h5>
+                        </div>
+                    </div>
+                    <div class="upcoming-seperator"></div>
+                    <div class="upcoming-deadline">
+                        <h4 id="upcoming-date"></h4>
+                        <h5 id="upcoming-message"></h5>
+                    </div>
+                </a>
+                <div class="summary-top-third">
+                    <a href="board.html">
+                        <h4 id="tasks-amount"></h4>
+                        <h5>Tasks in <br> board</h5>
+                    </a>
+                    <a href="board.html">
+                        <h4 id="in-progress-amount"></h4>
+                        <h5>Tasks in <br> progress</h5>
+                    </a>
+                    <a href="board.html">
+                        <h4 id="awaiting-feedback-amount"></h4>
+                        <h5>Awaiting <br> feedback</h5>
+                    </a>
+                </div>
+            </div>
+            <span class="welcome">
+                <p id="welcome-message"></p>
+                <p id="username-wrapper"></p>
+            </span>
+        </div>
+        <div id="mobile-welcome">
+            <span>
+                <p id="mobile-welcome-message"></p>
+                <p id="mobile-username-wrapper"></p>
+            </span>
+        </div>
+    </div>
+    </div>
+</body>
+</html>

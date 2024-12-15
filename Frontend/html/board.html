@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Board</title>
+    <link rel="shortcut icon" href="/Frontend/assets/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/Frontend/style/fonts.css">
+    <link rel="stylesheet" href="/Frontend/style/style.css">
+    <link rel="stylesheet" href="/Frontend/style/desktop_template.css">
+    <link rel="stylesheet" href="/Frontend/style/task_form_template.css">
+    <link rel="stylesheet" href="/Frontend/style/task_form_template_responsive.css">
+    <link rel="stylesheet" href="/Frontend/style/board-popup.css">
+    <link rel="stylesheet" href="/Frontend/style/board.css">
+    <link rel="stylesheet" href="/Frontend/style/board-responsive.css">
+    <link rel="stylesheet" href="/Frontend/style/desktop-template-responsive.css">
+
+</head>
+
+<body onload="initBoard()">
+    <div w3-include-html="/Frontend/assets/templates/desktop_template.html"></div>
+    <div id="pop-up" onclick="closeTask('pop-up')"></div>
+    <div id="pop-up-add-task" onclick="closeTask('pop-up-add-task')">
+        <div class="pop-up-add-task-container" onclick="stopPropagation(event)">
+            <div class="pop-up-task-header">
+                <div class="pop-up-add-task-title">Add Task</div>
+                <button class="pop-up-close-button" onclick="closeTask('pop-up-add-task')">
+                    <img src="/Frontend/assets/img/board/close-task.svg" alt="Close">
+                </button>
+            </div>
+            <div w3-include-html="/Frontend/assets/templates/task_form_template.html"></div>
+        </div>
+    </div>
+    <section class="content-margin">
+        <div class="board-header">
+            <div class="board-header-container">
+                <div class="board-title">
+                    <h1>Board</h1>
+                    <button onclick="openAddTask('')" class="add-task-rsponsive-btn">
+                        <img src="/Frontend/assets/img/board/plus-add-task-mobile.svg" alt="Plus">
+                    </button>
+                </div>
+                <div class="action-container">
+                    <form onsubmit="search(event)">
+                        <input id="search-text" type="text" minlength="3" required placeholder="Find Task">
+                        <img src="/Frontend/assets/img/board/vector3.svg" alt="Vector">
+                        <button id="search-button" class="search-button-container">
+                            <img src="/Frontend/assets/img/board/search.svg" alt="Search">
+                        </button>
+                    </form>
+                    <button href="/Frontend/html/add_task.html" class="add-task-button" onclick="openAddTask('')">Add task <img
+                            src="/Frontend/assets/img/board/add.svg" alt=""></button>
+                </div>
+            </div>
+            <div class="board-nav-bar-container">
+                <div class="board-nav-item">
+                    To do
+                    <button onclick="openAddTask('todo')">
+                        <img src="/Frontend/assets/img/board/plus-button.svg" alt="Plus">
+                    </button>
+                </div>
+                <div class="board-nav-item">
+                    In progress
+                    <button onclick="openAddTask('in-progress')">
+                        <img src="/Frontend/assets/img/board/plus-button.svg" alt="">
+                    </button>
+                </div>
+                <div class="board-nav-item">
+                    Await feedback
+                    <button onclick="openAddTask('await-feedback')">
+                        <img src="/Frontend/assets/img/board/plus-button.svg" alt="">
+                    </button>
+                </div>
+                <div class="board-nav-item">
+                    Done
+                </div>
+            </div>
+        </div>
+        <div class="board-distribution-container" id="board-distribution">
+            <div class="responsive-board-nav-item-container">
+                <div class="responsive-board-nav-item">
+                    <span>To do</span>
+                    <button onclick="openAddTask('todo')">
+                        <img src="/Frontend/assets/img/board/plus-button.svg" alt="Plus">
+                    </button>
+                </div>
+                <div class="board-distribution-colum" id="todo" onmouseleave="removeHighlight('todo')"
+                    ondrop="moveTo('todo')" ondragleave="removeHighlight('todo')"
+                    ondragover="allowDrop(event); highlight('todo')"></div>
+            </div>
+            <div class="responsive-board-nav-item-container">
+                <div class="responsive-board-nav-item">
+                    <span>In progress</span>
+                    <button onclick="openAddTask('in-progress')">
+                        <img src="/Frontend/assets/img/board/plus-button.svg" alt="Plus">
+                    </button>
+                </div>
+                <div class="board-distribution-colum" id="in-progress" onmouseleave="removeHighlight('in-progress')"
+                    ondrop="moveTo('in-progress')" ondragleave="removeHighlight('in-progress')"
+                    ondragover="allowDrop(event); highlight('in-progress') "></div>
+            </div>
+            <div class="responsive-board-nav-item-container">
+                <div class="responsive-board-nav-item">
+                    <span>Await feedback</span>
+                    <button onclick="openAddTask('await-feedback')">
+                        <img src="/Frontend/assets/img/board/plus-button.svg" alt="Plus">
+                    </button>
+                </div>
+                <div class="board-distribution-colum" id="await-feedback"
+                    onmouseleave="removeHighlight('await-feedback')" ondrop="moveTo('await-feedback');"
+                    ondragleave="removeHighlight('await-feedback')"
+                    ondragover="allowDrop(event); highlight('await-feedback')"></div>
+            </div>
+            <div class="responsive-board-nav-item-container">
+                <div class="responsive-board-nav-item ">
+                    <span>Done</span>
+                </div>
+                <div class="board-distribution-colum" id="done" onmouseleave="removeHighlight('done')"
+                    ondrop="moveTo('done')" ondragleave="removeHighlight('done')"
+                    ondragover="allowDrop(event); highlight('done')"></div>
+            </div>
+
+        </div>
+    </section>
+    <script src="/Frontend/js/server.js"></script>
+    <script src="/Frontend/js/script.js"></script>
+    <script src="/Frontend/js/task_form.js"></script>
+    <script src="/Frontend/js/contacts_array_storage.js"></script>
+    <script src="/Frontend/js/contacts.js"></script>
+    <script src="/Frontend/js/task_form_assignedTo.js"></script>
+    <script src="/Frontend/js/board_generate_templates.js"></script>
+    <script src="/Frontend/js/board.js"></script>
+</body>
+
+</html>

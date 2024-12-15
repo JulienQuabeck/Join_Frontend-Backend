@@ -1,0 +1,48 @@
+<header class="header">
+    <span class="title">Kanban Project Management Tool</span>
+    <a href="/html/summary.html"><img id="responsiveJoinLogoDark" src="/Frontend/assets/img/join-logo-dark-responsive.png" alt="join logo">
+    <div class="header-icons"></a>
+        <a id="help" class="scale-on-hover" href="/Frontend/html/help.html"><img src="/Frontend/assets/img/question-mark-icon.png"></a>
+        <img class="scale-on-hover" src="/Frontend/assets/img/guest-profile-icon.png" onclick="toggleClass('profile-nav-wrapper', 'hide')">
+    </div>
+</header>
+
+<div id="profile-nav-wrapper" class="hide" onclick="toggleClass('profile-nav-wrapper', 'hide')">
+    <div class="profile-nav">
+        <a href="/Frontend/html/legal_notice.html" onclick="toggleClass('profile-nav-wrapper', 'hide')">Legal notice</a> <br>
+        <a href="/Frontend/html/privacy_policy.html" onclick="toggleClass('profile-nav-wrapper', 'hide')">Privacy policy</a> <br>
+        <a href="/Frontend/html/index.html" onclick="logOut()">Log out</a>
+    </div>
+</div>
+
+<div class="side-bar">
+    <img id="joinLogoSideBar" class="join-logo" src="/Frontend/assets/img/join-logo.png">
+    <nav>
+        <div id="nav-bar" class="nav">
+            <a id="summary" href="/Frontend/html/summary.html" class="nav-item active">
+                <img src="/Frontend/assets/img/summary-icon.png">
+                <span>Summary</span>
+            </a>
+            <a id="add-task" href="/Frontend/html/add_task.html" class="nav-item">
+                <img src="/Frontend/assets/img/add-task-icon.png">
+                <span>Add Task</span>
+            </a>
+            <a id="board" href="/Frontend/html/board.html" class="nav-item">
+                <img src="/Frontend/assets/img/board-icon.png">
+                <span>Board</span>
+            </a>
+            <a id="contacts" href="/Frontend/html/contacts.html" class="nav-item">
+                <img src="/Frontend/assets/img/contacts-icon.png">
+                <span>Contacts</span>
+            </a>
+        </div>
+        <div class="legalAndPrivacyNotes">
+            <a id="privacy-policy" href="/Frontend/html/privacy_policy.html" class="bottom-nav-item scale-on-hover">
+                <span>Privacy policy</span>
+            </a>
+            <a id="legal-notice" href="/Frontend/html/legal_notice.html" class="bottom-nav-item scale-on-hover">
+                <span>Legal notice</span>
+            </a>
+        </div>
+    </nav>
+</div>

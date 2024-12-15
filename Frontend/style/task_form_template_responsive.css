@@ -1,0 +1,140 @@
+
+@media(max-width:1400px) {
+    .CompleteContent svg {
+        display: none;
+    }
+
+    .categories {
+        top: 338px;
+    }
+
+    .CompleteContent {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cancelButton {
+        display: none;
+    }
+
+    .buttonsAndInfotext {
+        justify-content: center;
+        gap: 100px;
+        margin-bottom: 70px;
+    }
+
+    .CategoryInputContainer{
+        transition: margin-bottom 0.3s ease; 
+    }
+
+    .buttonsAndInfotext{
+        margin-top:20px;    
+    }
+
+
+    .ContainerForAllPossibleContacts {
+        position:relative;
+        top:0 !important;
+    }
+
+    #AssignedToContent{
+        position:absolute;
+        top:550px;
+        width:440px;
+    }
+
+    .Content2{
+        position:relative;
+        top:140px; 
+        transition: margin 200ms ease-in-out; 
+    }
+}
+
+@media(max-width:1200px) {
+    .content-margin {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .buttonsAndInfotext {
+        margin-bottom: 150px;
+    }
+
+    .ContainerForAllPossibleContacts{
+        top:577px;
+    }
+
+    #AssignedToContent{
+        top:500px;
+    }
+}
+
+@media(max-width:500px) {
+    .CompleteContent {
+        width: 100%;
+    }
+
+    #TitleContent,
+    #DescriptionContent,
+    #AssignedToContent,
+    .selection,
+    #DueDateContent,
+    #SubtasksContent,
+    .subtaskInput,
+    .SubcontentPrio,
+    #categories {
+        width: 300px;
+    }
+
+    #subtask {
+        width: 250px;
+    }
+
+    .SubcontentPrio {
+        gap: 4px;
+    }
+
+    .prioclass {
+        gap: 2px;
+        padding: 16px 5px;
+    }
+
+    .textarea {
+        min-width: 300px;
+        max-width: 300px;
+    }
+
+    .Content {
+        width: 300px;
+    }
+
+    .createTaskButton {
+        font-size: 16px;
+        padding: 8px;
+    }
+
+    .categories{
+        top:338px;
+    }
+
+    .ContainerForAllPossibleContacts{
+        top:592px;
+        width:300px;
+    }
+
+    .ContainerForAllPossibleContacts {
+        top: 590px;
+        width: 300px;
+    }
+
+    .contactName {
+        margin-left: 0;
+    }
+}
+
+@media(max-width:410px) {
+    .createTaskButton {
+        width: 150px;
+        font-size: 14px;
+    }
+}

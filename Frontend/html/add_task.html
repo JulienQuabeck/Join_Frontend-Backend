@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join - Add task</title>
+    <link rel="shortcut icon" href="/Frontend/assets/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/Frontend/style/fonts.css">
+    <link rel="stylesheet" href="/Frontend/style/style.css">
+    <link rel="stylesheet" href="/Frontend/style/desktop_template.css">
+    <link rel="stylesheet" href="/Frontend/style/task_form_template.css">
+    <link rel="stylesheet" href="/Frontend/style/desktop-template-responsive.css">
+    <link rel="stylesheet" href="/Frontend/style/task_form_template_responsive.css">
+    <script src="/Frontend/js/server.js"></script>
+    <script src="/Frontend/js/script.js"></script>
+    <script src="/Frontend/js/task_form.js"></script>
+    <script src="/Frontend/js/contacts_array_storage.js"></script>
+    <script src="/Frontend/js/contacts.js"></script>
+    <script src="/Frontend/js/task_form_assignedTo.js"></script>
+</head>
+<body onload="initAddTask()">
+    <div w3-include-html="/Frontend/assets/templates/desktop_template.html"></div>
+    <section class="content-margin">
+        <h1 class="addTaskHeadline"> Add Task</h1>
+        <div w3-include-html="/Frontend/assets/templates/task_form_template.html">
+        </div>
+    </section>
+</body>
+</html>

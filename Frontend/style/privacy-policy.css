@@ -1,0 +1,52 @@
+.content-margin {
+    padding-bottom: 50px;
+}
+
+.content-margin h3 {
+    color: #000;
+    font-size: 27px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%; /* 32.4px */
+}
+
+.arrow{
+    width:32px;
+    height:32px;
+}
+
+.ContentContainer p{
+    color: #000;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%; /* 19.2px */
+    align-self: stretch;
+}
+
+.privacyPolicyHeadline{
+font-family: 'Inter', sans-serif;
+font-size: 61px;
+font-style: normal;
+font-weight: 700;
+line-height: 120%; /* 73.2px */   
+display:flex;
+justify-content: space-between;
+align-items: center;
+}
+
+.Homebtn{
+    display: flex;
+    padding: 16px;
+    justify-content: center;
+    border-radius: 10px;
+    background: #2A3647;
+    color: #FFF;
+    font-family: 'Inter', sans-serif;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 120%;
+    width:250px;
+    margin-top:16px;
+}

@@ -1,0 +1,105 @@
+@media (max-width: 1200px) {
+    .side-bar {
+        height: 80px;
+        width: 100%;
+        bottom: 0;
+        top: auto;
+        justify-content: center;
+        flex-direction: unset;
+    }
+
+    .content-margin {
+        margin-top: 85px;
+    }
+
+    #joinLogoSideBar {
+        display: none;
+    }
+
+    nav{
+        justify-content: center;
+    }
+
+    .nav {
+        flex-direction: unset;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 76px;
+        width: 800px;
+    }
+
+    .nav a {
+        flex-direction: column;
+        padding: 0;
+    }
+
+    .nav a img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .legalAndPrivacyNotes {
+        display: none;
+    }
+
+    .nav-item {
+        width: 80px;
+        height: 76px;
+        gap: 10px;
+        justify-content: center;
+    }
+
+    .active {
+        width: 80px;
+        padding: 8px;
+        border-radius: 16px;
+        height: 76px;
+    }
+
+    .header{
+        height: 80px;
+    }
+
+    #responsiveJoinLogoDark{
+        display: flex;
+    }
+
+    .title{
+        display: none;
+    }
+
+    #help{
+        display: none;
+    }
+
+    .profile-nav {
+        top: 70px;
+        right: 10px;
+    }
+}
+
+@media (max-width: 700px){
+    .nav{
+        width: 600px;
+    }
+}
+
+@media (max-width: 570px){
+    .nav{
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 500px) {
+    .content-margin {
+        margin-top: 100px;
+    }
+}
+
+@media (max-width: 390px){
+    .nav{
+        gap: 2px;
+        font-size: 14px;
+    }
+}

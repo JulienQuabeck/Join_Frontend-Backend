@@ -1,0 +1,324 @@
+body {
+    overflow: hidden;
+}
+
+#start-logo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-left: -137px;
+    margin-top: -162px;
+    z-index: 1;
+    transition: all 400ms ease-in-out;
+}
+
+.animated-start-logo {
+    transform: scale(0.5, 0.5) !important;
+    transform: translate(-50%, -50%);
+    top: 110px !important;
+    left: 110px !important;
+}
+
+#dynamic-content {
+    animation: content-fade-in forwards 1s ease-in-out;
+}
+
+.sign-up-wrapper {
+    position: fixed;
+    top: 55px;
+    right: 55px;
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.dark-button {
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    border: unset;
+    padding: 15px 24px;
+    background-color: #2A3647;
+    border-radius: 8px;
+    transition: all 100ms ease-in-out;
+}
+
+.dark-button:hover {
+    background-color: #29ABE2;
+    cursor: pointer;
+    box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.light-button {
+    color: #2A3647;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 15px 24px;
+    transition: all 100ms ease-in-out;
+    background-color: white;
+}
+
+.light-button:hover {
+    cursor: pointer;
+    color: #29ABE2;
+    border: 2px solid #29ABE2;
+    box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.sign-up-wrapper button:hover {
+    cursor: pointer;
+    background-color: #29ABE2;
+}
+
+.sign-up-wrapper span {
+    font-size: 20px;
+}
+
+footer {
+    text-wrap: nowrap;
+    position: fixed;
+    top: 90%;
+    left: 50%;
+    font-size: 16px;
+    display: flex;
+    gap: 32px;
+    transform: translate(-50%);
+    animation: fade-in 1s;
+    animation-timing-function: ease-in-out;
+}
+
+footer a {
+    text-decoration: none;
+    color: #A8A8A8;
+}
+
+footer a:hover {
+    color: #29ABE2;
+    cursor: pointer;
+    transition: color 100ms ease-in-out;
+}
+
+#form-wrapper {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.log-in-box {
+    height: 493px;
+    width: 652px;
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0px 0px 14px 3px #0000000A;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 32px;
+    padding: 48px 115px;
+}
+
+.log-in-box h1 {
+    font-size: 61px;
+    text-align: center;
+    margin: 0;
+}
+
+.headline-border {
+    width: 150px;
+    min-height: 3px;
+    background-color: #29ABE2;
+    border-radius: 20px;
+}
+
+.log-in-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+    width: 422px;
+}
+
+form input {
+    width: 100%;
+    font-size: 20px;
+    border: unset;
+}
+
+form input::placeholder {
+    color: #D1D1D1;
+}
+
+form input:focus {
+    outline: unset;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    padding: 12px 21px;
+    border: 1px solid #D1D1D1;
+    border-radius: 10px;
+}
+
+.input-wrapper img {
+    object-fit: contain;
+}
+
+.remember-me-box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding-left: 39px;
+}
+
+.remember-me-box input {
+    width: min-content !important;
+}
+
+.entry-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 35px;
+}
+
+.entry-buttons button {
+    font-size: 21px !important;
+}
+
+.sign-up-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 737px;
+    width: 598px;
+    border-radius: 30px;
+    padding: 48px 88px;
+    gap: 32px;
+    background-color: white;
+    box-shadow: 0px 0px 14px 3px #0000000A;
+    position: relative;
+}
+
+.sign-up-box h1 {
+    margin: 0;
+    font-size: 61px;
+    text-align: center;
+}
+
+.sign-up-box form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.arrow-left {
+    border: unset;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    cursor: pointer;
+    padding: 0;
+    background-color: transparent;
+}
+
+#password-message {
+    color: #FF8190;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    align-self: flex-start;
+}
+
+#error-message {
+    color: #FF8190;
+    font-size: 12px;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    align-self: flex-start;
+}
+
+.privacy-policy-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    text-wrap: nowrap;
+    color: #A8A8A8;
+    padding: 16px 0 !important;
+}
+
+.privacy-policy-box a {
+    text-decoration: none;
+}
+
+.privacy-policy-box a:hover {
+    color: #29ABE2;
+}
+
+.confirmation-message {
+    background-color: #2A3647;
+    position: fixed;
+    bottom: -13%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 2;
+    box-shadow: 0px 0px 4px 0px #00000026;
+    color: white;
+    font-size: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 0;
+    text-wrap: nowrap;
+}
+
+#confirmation-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: -1;
+}
+
+.dark-background {
+    z-index: 1 !important;
+    background-color: rgba(0, 0, 0, 1);
+    animation: dark-background 300ms ease-in-out;
+    animation-fill-mode: forwards;
+}
+
+#start-background-mobile {
+    display: none;
+}
+
+#start-logo-mobile {
+    display: none;
+}
+
+@keyframes content-fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes dark-background {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0.25;
+    }
+}
