@@ -45,6 +45,7 @@ async function loadUsers() {
 //     }, 800);
 // }
 async function signUp(password) {
+
     let name = document.getElementById('name').value;
     let lastname = document.getElementById('lastname').value
     let email = document.getElementById('email').value;
@@ -52,24 +53,46 @@ async function signUp(password) {
     let color = generateRandomColor();
     debugger
     users = {
-        username : `${name}_${lastname}`,
-        email : email,
-        phone : phone,
-        color : color,
+        username: `${name}_${lastname}`,
+        email: email,
+        password: password,
+        phone: phone,
+        color: color,
     }
-    await setItem('users', JSON.stringify(users));
-    toggleClass('sign-up-confirmation', 'fly-in');
-    toggleClass('confirmation-wrapper', 'dark-background');
-    setTimeout(function() {
-        renderLogIn();
-    }, 800);
+    // await setItem('users', JSON.stringify(users));
+    const success = await addUserToServer(users);
+    if (success) {
+        toggleClass('sign-up-confirmation', 'fly-in');
+        toggleClass('confirmation-wrapper', 'dark-background');
+        setTimeout(function () {
+            renderLogIn();
+        }, 800);
+    }
+}
+
+async function addUserToServer(users) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/register/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(users),
+        });
+        if (!response.ok) {
+            const errorDetails = await response.json();
+            console.error("Server Error Details:", errorDetails);
+            throw new Error(`Failed to push contact: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Failed to push task on the server:", error);
+    }
 }
 
 function generateRandomColor() {
     let randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
     return randomColor;
-  }
-
+}
 
 
 /**
@@ -101,7 +124,8 @@ function findUser(emailInput, passwordInput) {
 /**
  * Checks if the value of the password's input field and the value of the comfirm password's field are equal.
  */
-async function validatePassword() {
+async function validatePassword(event) {
+    event.preventDefault();
     let password = document.getElementById('password').value;
     let confirmPassword = document.getElementById('confirm-password').value;
     if (password === confirmPassword) {
@@ -128,7 +152,7 @@ function animateStartLogo() {
  * Begins the animation of the starting logo when index.html has loaded on desktop devices.
  */
 function desktopStartAnimation() {
-    setTimeout(function(){
+    setTimeout(function () {
         toggleClass('start-logo', 'animated-start-logo');
         toggleClass('form-wrapper', 'fade-in-content');
     }, 600);
@@ -283,14 +307,13 @@ function renderSignUp() {
  * @returns HTML template of the sign up form.
  */
 function signUpFormTemplate() {
-    debugger
     return/*html*/`
         <div id="form-wrapper">
             <div class="sign-up-box">
                 <button class="arrow-left scale-on-hover" onclick="renderLogIn()"><img src="/Frontend/assets/img/arrow-left-line.png"></button>
                 <h1>Sign up</h1>
                 <div class="headline-border"></div>
-                <form id="sign-up-form" onsubmit="validatePassword(); return false;">
+                <form id="sign-up-form" onsubmit="validatePassword(event); return false;">
                     <div class="input-wrapper">
                         <input type="text" id="name" required placeholder="Name" oninput="checkSignUpForm()" autofocus>
                         <img id="email-image" src="/Frontend/assets/img/name-icon.png">

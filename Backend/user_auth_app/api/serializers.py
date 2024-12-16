@@ -11,29 +11,39 @@ class UserProfileSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(source='user.id', read_only=True)
     username = serializers.CharField(source='user.username', read_only=True)
     email = serializers.CharField(source='user.email', read_only=True)
-    # user = UserSerializer()
     class Meta:
         model = UserProfile
         fields = ['user_id','username','email', 'phone', 'color']
 
-# class RegistrationSerializer(serializers.ModelSerializer):
+class RegistrationSerializer(serializers.ModelSerializer):
+    phone = serializers.IntegerField(required=False)  # Füge das Feld hinzu
+    color = serializers.CharField(max_length=10, required=False)  # Füge das Feld hinzu
     
-#     class Meta:
-#         model = User
-#         fields = ['username', 'email', 'password', 'repeated_password']
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password', 'phone', 'color']
+        extra_kwargs = {
+            'password': {'write_only': True}  # Passwort wird nur zum Schreiben verwendet
+        }
 
+    def create(self, validated_data):
+        # Extrahiere die zusätzlichen Felder
+        phone = validated_data.pop('phone', None)
+        color = validated_data.pop('color', None)
 
-#     def save(self):
-#         pw = self.validated_data['password']
-#         repeated_pw = self.validated_data['repeated_password']
+        # Benutzer erstellen
+        user = User.objects.create(
+            username=validated_data['username'],
+            email=validated_data['email']
+        )
+        user.set_password(validated_data['password'])
+        user.save()
 
-#         if pw != repeated_pw:
-#             raise serializers.ValidationError(['error' : 'passwords dont match'])
+        # Profil erstellen
+        UserProfile.objects.create(
+            user=user,
+            phone=phone,
+            color=color,
+        )
 
-#         if User.objects.filter(email=self.validated_data['email']).exists():
-#             raise serializers.ValidationError({'error:':'Email already exists!'})
-
-#         account  = User(email=self.validated_data['email'], ussername=self.validated_data['username'])
-#         account.set_password(pw)
-#         account.save()
-#         return  account
+        return user

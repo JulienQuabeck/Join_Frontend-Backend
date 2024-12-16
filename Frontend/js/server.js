@@ -310,6 +310,7 @@ function checkIfCheckboxesWereChecked(firstloadedContacts) {
     }
 }
 
+
 function checkIfCheckboxesWereChecked2() {
     if (chosenContactsForNewTask.length > 0 && loadContactsAgain == true) {
         for (let i = 0; i < chosenContactsForNewTask.length; i++) {
