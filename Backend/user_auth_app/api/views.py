@@ -1,4 +1,8 @@
 from rest_framework import generics, viewsets, status
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.authtoken.models import Token
+#from .serializers import UserProfileSerializer, RegistrationSerializer
 from .serializers import UserProfileSerializer
 from user_auth_app.models import UserProfile
 from django.contrib.auth.models import User
@@ -36,3 +40,23 @@ class UserProfileList(viewsets.ModelViewSet):
         # Serialisieren und zurückgeben
         serializer = self.get_serializer(user_profile)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+# class RegistrationView(APIView):
+#     permission_class = [AllowAny]
+
+#     def post(self, request):
+#         serializer = RegistrationSerializer(data=request.data)
+
+#         data = {}
+#         if serializer.is_valid():
+#             saved_account = serializer.save()
+#             token, created = Token.objects.get_or_create(user = saved_account)
+#             data = {
+#                 'token' : token.key,
+#                 'username' : saved_account.username,
+#                 'email' : saved_account.email
+#             }
+#         else:
+#             data=serializer.errors
+
+#         return Response(data)

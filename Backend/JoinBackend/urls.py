@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from Join.views import contactModelViewSet, taskModelViewSet
 from user_auth_app.api.views import UserProfileList
+#from user_auth_app.api.views import UserProfileList, RegistrationView
 from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register(r'contact', contactModelViewSet)
 router.register(r'task', taskModelViewSet)
 router.register(r'user', UserProfileList)
+#router.register(r'register', RegistrationView)
 
 urlpatterns = [
     path('', include(router.urls)),
