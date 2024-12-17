@@ -17,9 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from Join.views import contactModelViewSet, taskModelViewSet
-from user_auth_app.api.views import UserProfileList
-from user_auth_app.api.views import UserProfileList, RegistrationView
+#from user_auth_app.views import CustomLoginView
+#from user_auth_app.api.views import UserProfileList
+from user_auth_app.api.views import UserProfileList, RegistrationView, CustomLoginView
 from rest_framework import routers
+from rest_framework.authtoken.views import obtain_auth_token
 
 router = routers.SimpleRouter()
 router.register(r'contact', contactModelViewSet)
@@ -31,4 +33,5 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth', include('rest_framework.urls')),
     path('admin/', admin.site.urls),
+    path('login/', CustomLoginView.as_view(), name='login'),
 ]

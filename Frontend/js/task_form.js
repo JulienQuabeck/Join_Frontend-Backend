@@ -5,7 +5,7 @@ let subtasks = [];
  * Initializes certain functions once the body of the page has fully loaded.
  */
 async function initAddTask() {
-    checkLogInStatus();
+    checkIfUserIsLoggedIn();
     await init('add-task');
     minDate();
     choosePrio(2);

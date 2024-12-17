@@ -2,12 +2,13 @@ let sumToDos = 0;
 let sumDone = 0;
 let sumInProgress = 0;
 let sumAwaitFeedback = 0;
+
 /**
  * Initializes certain functions once the body of the page has fully loaded.
  */
 async function initSummary() {
+    checkIfUserIsLoggedIn();
     let tasks = await loadTasksFromServer();
-    console.log(tasks);
     countSumsForColums(tasks);
     checkLogInStatus();
     await init('summary');

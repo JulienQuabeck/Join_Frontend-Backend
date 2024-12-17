@@ -2,6 +2,7 @@
  * Initializes certain functions once the body of the page has fully loaded.
  */
 async function initContacts() {
+  checkIfUserIsLoggedIn();
   checkLogInStatus();
   await init('contacts');
   await loadUsers();
@@ -378,7 +379,6 @@ async function saveEditedContact() {
     if (!response.ok) {
       throw new Error(`Failed to update contact: ${response.status}`);
     }
-    debugger
     //const updatedContactFromServer = await response.json();
     // contacts[index] = updatedContactFromServer;
     contacts[index] = updatedContact;

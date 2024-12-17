@@ -15,6 +15,7 @@ let loadedTask = [];
  * Initializes certain functions once the body of the page has fully loaded.
  */
 async function initBoard() {
+    checkIfUserIsLoggedIn();
     checkLogInStatus();
     await init('board', 'task_from');
     // await loadTasks();

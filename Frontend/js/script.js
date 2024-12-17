@@ -128,9 +128,9 @@ function changeImageSource(id, url) {
  * Loggs out the current user.
  */
 function logOut() {
+    debugger
     toggleClass('profile-nav-wrapper', 'hide');
-    setCurrentUsername('');
-    window.location.replace = 'index.html'
+    localStorage.removeItem("Data")
 }
 
 
@@ -154,7 +154,7 @@ function checkLogInStatus() {
  * @param {string} username - The currently loggin in user's username.
  */
 function setCurrentUsername(username) {
-    sessionStorage.setItem('current-username', username);
+    sessionStorage.setItem('data', username);
 }
 
 

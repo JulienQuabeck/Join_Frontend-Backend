@@ -45,13 +45,11 @@ async function loadUsers() {
 //     }, 800);
 // }
 async function signUp(password) {
-
     let name = document.getElementById('name').value;
     let lastname = document.getElementById('lastname').value
     let email = document.getElementById('email').value;
     let phone = document.getElementById('phone').value;
     let color = generateRandomColor();
-    debugger
     users = {
         username: `${name}_${lastname}`,
         email: email,
@@ -59,7 +57,6 @@ async function signUp(password) {
         phone: phone,
         color: color,
     }
-    // await setItem('users', JSON.stringify(users));
     const success = await addUserToServer(users);
     if (success) {
         toggleClass('sign-up-confirmation', 'fly-in');
@@ -98,12 +95,42 @@ function generateRandomColor() {
 /**
  * Logs the user in.
  */
-function logIn() {
-    let emailInput = document.getElementById('email');
-    let passwordInput = document.getElementById('password');
-    findUser(emailInput, passwordInput);
+async function logIn(event) {
+    event.preventDefault();
+    let emailInput = document.getElementById('email').value;
+    let passwordInput = document.getElementById('password').value;
+    let data = {
+        'email': emailInput,
+        'password': passwordInput
+    }
+    await searchForUserInBackend(data);
+    debugger
+    window.location.href = "summary.html";
 }
 
+async function searchForUserInBackend(data) {
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/login/`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to logIn: ${response.status}`);
+        }
+        const responseData = await response.json();
+        saveDataInLocalStorage(responseData);
+    } catch (error) {
+        console.error("Failed to logIn", error);
+    }
+}
+
+function saveDataInLocalStorage(responseData) {
+    let dataAsText = JSON.stringify(responseData);
+    localStorage.setItem('Data', dataAsText);
+}
 
 /**
  * Tries to find the data from the backend that matches his login data.
@@ -183,7 +210,6 @@ function renderLogIn() {
     checkIfEmpty('password', 'password-image');
 }
 
-
 /**
  * HTML template for better readability.
  * @returns HTML template of the log in form.
@@ -198,9 +224,9 @@ function logInFormTemplate() {
             <div class="log-in-box">
                 <h1>Log in</h1>
                 <div class="headline-border" style="box-sizing: content-box !important;"></div>
-                <form id="log-in-form" onsubmit="logIn(); return false;">
+                <form id="log-in-form" onsubmit="logIn(event); return false">
                     <div class="input-wrapper">
-                        <input type="email" id="email" required placeholder="Email" autofocus>
+                        <input type="text" id="email" required placeholder="Email" autofocus>
                         <img id="email-image" src="/Frontend/assets/img/email-icon.png">
                     </div>
                     <div class="input-wrapper">
@@ -262,14 +288,24 @@ function togglePasswordVisibility(inputId, imageId) {
  * Sets up log in for guest user by disabling the form validation.
  */
 function logInAsGuest() {
-    let emailInput = document.getElementById('email');
-    let passwordInput = document.getElementById('password');
-    emailInput.removeAttribute('required');
-    passwordInput.removeAttribute('required');
-    setCurrentUsername('Guest');
+    let emailInputField = document.getElementById('email');
+    emailInputField.removeAttribute('required');
+    let passwordInputField = document.getElementById('password');
+    passwordInputField.removeAttribute('required');
+    let emailInput = "guest@guest.com";
+    let passwordInput = "guestPassword";
+    let id = 19;
+    let token = "ee299600f43acc1d8e88f6b914a9a73ac2740aa7";
+    let username = "Guest_Guest";
+    responseData = {
+        'username': username,
+        'email': emailInput,
+        'id': id,
+        'token': token,
+    }
+    saveDataInLocalStorage(responseData)
     window.location.href = 'summary.html';
 }
-
 
 /**
  * Disables sign up button until the form is filled.

@@ -374,3 +374,10 @@ async function searchByLetter(e) {
     clearAllColumns();
     renderTasks(searchedTasks);
 }
+
+function checkIfUserIsLoggedIn(){
+    let loggedIn = localStorage.getItem("Data");
+    if(!loggedIn){
+        window.location.href = 'index.html';
+    }
+}
