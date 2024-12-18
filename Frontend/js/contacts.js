@@ -356,13 +356,16 @@ async function saveEditedContact() {
   let editedEmail = document.getElementById("editEmail").value;
   let editedPhone = document.getElementById("editPhone").value;
   let selectedContactItem = document.querySelector(".selectedContact");
-  let index = parseInt(selectedContactItem.id.split('_')[1]);
-  let id = contacts[index].user_id
+  // let index = parseInt(selectedContactItem.id.split('_')[1]);
+  // let id = contacts[index].user_id
+  let data = localStorage.getItem('Data');
+  let idAsText = JSON.parse(data);
+  let id = idAsText.id;
+  
   let updatedContact = {
     username: `${editedName}_${editedLastname}`,
     email: editedEmail,
     phone: editedPhone,
-    color: contacts[index].color
   }
   let saveEditButton = document.getElementById("saveEditButton");
   createLoadingAnimation(saveEditButton);
@@ -374,21 +377,19 @@ async function saveEditedContact() {
       },
       body: JSON.stringify(updatedContact),
     });
-    console.log(JSON.stringify(updatedContact));
     
     if (!response.ok) {
       throw new Error(`Failed to update contact: ${response.status}`);
     }
     //const updatedContactFromServer = await response.json();
     // contacts[index] = updatedContactFromServer;
-    contacts[index] = updatedContact;
+    // contacts[index] = updatedContact;
     //console.log("Contact successfully updated:", updatedContactFromServer);
   } catch (error) {
     console.error("Failed to update contact on the server:", error);
   }
   // await setItemContacts("contacts", JSON.stringify(contacts));
   closePopUp();
-  debugger
   renderContactBook();
   showContactDetails(selectedContactItem.id);
   resetSaveButton(saveEditButton);

@@ -128,7 +128,6 @@ function changeImageSource(id, url) {
  * Loggs out the current user.
  */
 function logOut() {
-    debugger
     toggleClass('profile-nav-wrapper', 'hide');
     localStorage.removeItem("Data")
 }
@@ -192,4 +191,34 @@ function logInCnodition() {
     getCurrentUsername() === '' && window.location.pathname === '/html/privacy_policy.html' ||
     getCurrentUsername() === undefined && window.location.pathname === '/html/legal_notice.html' ||
     getCurrentUsername() === undefined && window.location.pathname === '/html/privacy_policy.html';
+}
+
+async function loadUserData(){
+    let currentUser = localStorage.getItem('Data');
+    let currentUserAsText = JSON.parse(currentUser);
+    let currentUserId = currentUserAsText.id;
+    let data;
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/user/${currentUserId}/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },        
+        });
+        data = await response.json();
+        if (!response.ok) {
+            throw new Error(`Failed to load users: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Failed to load users from the server:", error);
+    }
+    editContact();
+    let nameparts = data.username.split('_');
+    let firstName = nameparts[0];
+    let lastName = nameparts[1];
+    
+    document.getElementById('editName').value = firstName;
+    document.getElementById('editLastname').value = lastName;
+    document.getElementById('editEmail').value = data.email;
+    document.getElementById('editPhone').value = data.phone;
 }

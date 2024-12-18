@@ -104,7 +104,6 @@ async function logIn(event) {
         'password': passwordInput
     }
     await searchForUserInBackend(data);
-    debugger
     window.location.href = "summary.html";
 }
 
@@ -121,6 +120,9 @@ async function searchForUserInBackend(data) {
             throw new Error(`Failed to logIn: ${response.status}`);
         }
         const responseData = await response.json();
+        console.log(responseData);
+        debugger
+        
         saveDataInLocalStorage(responseData);
     } catch (error) {
         console.error("Failed to logIn", error);

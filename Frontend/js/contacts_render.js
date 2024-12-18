@@ -8,7 +8,7 @@
  * @param {Object} contact - The contact information.
  * @param {number} index - The index of the contact.
  */
-function renderContactItem(contactOverview, circleStyle, circleClass, contactInitials, contact, index, firstName, lastName) {   
+function renderContactItem(contactOverview, circleStyle, circleClass, contactInitials, contact, index, firstName, lastName) {
     let contactItemId = `contactItem_${index}`;
     let contactItemHTML = `
           <div id="${contactItemId}" class="contactItem" onclick="showContactDetails('${contactItemId}', true)">
@@ -34,7 +34,7 @@ async function loadUsers() {
         if (!response.ok) {
             throw new Error(`Failed to load users: ${response.status}`);
         }
-        contacts = await response.json();      
+        contacts = await response.json();
     } catch (error) {
         console.error("Failed to load users from the server:", error);
     }
@@ -153,15 +153,17 @@ function renderEditFields(contact) {
  */
 function renderEditDeleteButtons() {
     return `
-        <div class="contactEditButton" onclick="editContact()">
-            <img class="contactDetailsNameIcons" src="/Frontend/assets/img/edit-contact.png" alt="edit contact">
-            <p>Edit</p>
-        </div>
+
     `;
-//     <div class="contactDeleteButton" onclick="deleteContact()">
-//     <img class="contactDetailsNameIcons" src="/Frontend/assets/img/delete-contact.png" alt="delete contact">
-//     <p>Delete</p>
-// </div>
+        //     <div class="contactEditButton" onclick="editContact()">
+    //         <img class="contactDetailsNameIcons" src="/Frontend/assets/img/edit-contact.png" alt="edit contact">
+    //         <p>Edit</p>
+    //     </div>
+    //     <div class="contactDeleteButton" onclick="deleteContact()">
+    //     <img class="contactDetailsNameIcons" src="/Frontend/assets/img/delete-contact.png" alt="delete contact">
+    //     <p>Delete</p>
+    // </div>
+
 }
 
 
