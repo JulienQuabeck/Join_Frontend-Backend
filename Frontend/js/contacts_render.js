@@ -153,9 +153,8 @@ function renderEditFields(contact) {
  */
 function renderEditDeleteButtons() {
     return `
-
     `;
-        //     <div class="contactEditButton" onclick="editContact()">
+    //     <div class="contactEditButton" onclick="editContact()">
     //         <img class="contactDetailsNameIcons" src="/Frontend/assets/img/edit-contact.png" alt="edit contact">
     //         <p>Edit</p>
     //     </div>

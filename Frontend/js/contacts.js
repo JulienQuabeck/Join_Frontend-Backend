@@ -234,21 +234,6 @@ function addContact() {
 
 
 /**
- * Closes the pop-up.
- */
-function closePopUp() {
-  let addContactOverlay = document.getElementById("addContactOverlay");
-  let editContactOverlay = document.getElementById("editContactOverlay");
-  let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
-
-  addContactOverlay.style.display = "none";
-  editContactOverlay.style.display = "none";
-  responsiveAddContactButton.style.zIndex = "1200";
-  responsiveAddContactButton.style.display = "flex";
-}
-
-
-/**
  * Function for adding new contact
  */
 async function createContact() {
@@ -329,23 +314,6 @@ function closePopUpWithConfirmation() {
   showConfirmationMessage();
   closePopUp();
 }
-
-
-/**
- * Opens the pop-up for editing a contact.
- * 
- * @param {string} name - The name of the contact.
- * @param {string} email - The email of the contact.
- * @param {string} phone - The phone number of the contact.
- */
-function editContact() {
-  let editContactOverlay = document.getElementById("editContactOverlay");
-  let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
-
-  responsiveAddContactButton.setAttribute('style', 'display:none !important');
-  editContactOverlay.style.display = "flex";
-}
-
 
 /**
  * Saves the edited contact information, updates the contact book, and shows the edited contact details.

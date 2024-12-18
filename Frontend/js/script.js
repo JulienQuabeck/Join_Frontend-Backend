@@ -64,6 +64,15 @@ async function setItem(key, value) {
  * @param {string} classname - The name of the class to be toggled.
  */
 function toggleClass(id, classname) {
+    let currentUser = localStorage.getItem('Data');
+    if (currentUser) {
+        let currentUserAsText = JSON.parse(currentUser);
+        let currentUserId = currentUserAsText.id;
+        if (currentUserId === 19) {
+            document.getElementById('profil').style.display = 'none';
+            document.getElementById('profilBr').style.display = 'none';
+        }
+    }
     document.getElementById(id).classList.toggle(classname);
 }
 
@@ -187,38 +196,135 @@ function lockScreenOrientation() {
 
 
 function logInCnodition() {
-    return getCurrentUsername() === '' && window.location.pathname === '/html/legal_notice.html' || 
-    getCurrentUsername() === '' && window.location.pathname === '/html/privacy_policy.html' ||
-    getCurrentUsername() === undefined && window.location.pathname === '/html/legal_notice.html' ||
-    getCurrentUsername() === undefined && window.location.pathname === '/html/privacy_policy.html';
+    return getCurrentUsername() === '' && window.location.pathname === '/html/legal_notice.html' ||
+        getCurrentUsername() === '' && window.location.pathname === '/html/privacy_policy.html' ||
+        getCurrentUsername() === undefined && window.location.pathname === '/html/legal_notice.html' ||
+        getCurrentUsername() === undefined && window.location.pathname === '/html/privacy_policy.html';
 }
 
-async function loadUserData(){
+async function loadUserData() {
     let currentUser = localStorage.getItem('Data');
     let currentUserAsText = JSON.parse(currentUser);
     let currentUserId = currentUserAsText.id;
-    let data;
-    try {
-        const response = await fetch(`http://127.0.0.1:8000/user/${currentUserId}/`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },        
-        });
-        data = await response.json();
-        if (!response.ok) {
-            throw new Error(`Failed to load users: ${response.status}`);
+    if (currentUserId === 19) {
+        console.log('Diese Funktion wird mit dem Gastzugang nicht unterstützt');
+
+        // Diese Funktion wird mit dem Gastzugang nicht unterstützt
+    } else {
+        let data;
+        try {
+            const response = await fetch(`http://127.0.0.1:8000/user/${currentUserId}/`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            data = await response.json();
+            if (!response.ok) {
+                throw new Error(`Failed to load users: ${response.status}`);
+            }
+        } catch (error) {
+            console.error("Failed to load users from the server:", error);
         }
-    } catch (error) {
-        console.error("Failed to load users from the server:", error);
+        editContact();
+        let nameparts = data.username.split('_');
+        let firstName = nameparts[0];
+        let lastName = nameparts[1];
+
+        document.getElementById('editName').value = firstName;
+        document.getElementById('editLastname').value = lastName;
+        document.getElementById('editEmail').value = data.email;
+        document.getElementById('editPhone').value = data.phone;
     }
-    editContact();
-    let nameparts = data.username.split('_');
-    let firstName = nameparts[0];
-    let lastName = nameparts[1];
-    
-    document.getElementById('editName').value = firstName;
-    document.getElementById('editLastname').value = lastName;
-    document.getElementById('editEmail').value = data.email;
-    document.getElementById('editPhone').value = data.phone;
+}
+
+/**
+ * Opens the pop-up for editing a contact.
+ * 
+ * @param {string} name - The name of the contact.
+ * @param {string} email - The email of the contact.
+ * @param {string} phone - The phone number of the contact.
+ */
+function editContact() {
+    let container = document.getElementById('dynamicContainer');
+    container.innerHTML = generateEditHTML();
+    container.classList.add('dynamicContainer');
+    let editContactOverlay = document.getElementById("editContactOverlay");
+    let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
+
+    responsiveAddContactButton.setAttribute('style', 'display:none !important');
+    editContactOverlay.style.display = "flex";
+}
+
+/**
+* Closes the pop-up.
+*/
+function closePopUp() {
+    let editContactOverlay = document.getElementById("editContactOverlay");
+    let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
+
+    editContactOverlay.style.display = "none";
+    responsiveAddContactButton.style.zIndex = "1200";
+    responsiveAddContactButton.style.display = "flex";
+}
+
+function generateEditHTML() {
+    return `
+    <div id="responsiveAddContactButton" onclick="addContact()">
+        <img src="/Frontend/assets/img/add-contact.png" alt="add contact image">
+    </div>
+    <div id="responsiveEditContactButton" onclick="toggleEditDeleteButtonPopUp()">
+        <img src="/Frontend/assets/img/show-more.png" alt="add contact image">
+    </div>
+    <div id="editDeleteButtonPopUp" class="editDeleteButtonPopUp">
+        <div class="contactEditButton" onclick="editContact()">
+            <img class="contactDetailsNameIcons" src="/Frontend/assets/img/edit-contact.png" alt="edit contact">
+            <p>Edit</p>
+        </div>
+        <div class="contactDeleteButton" onclick="deleteContact()">
+            <img class="contactDetailsNameIcons" src="/Frontend/assets/img/delete-contact.png" alt="delete contact">
+            <p>Delete</p>
+        </div>
+    </div>      
+    <div id="editContactOverlay">
+        <div id="editContactPopUp">
+            <button class="closeContactButton" type="button" onclick="closePopUp()">
+                <img src="/Frontend/assets/img/cancel_dark.png" alt="close icon">
+            </button>
+            <div class="contactLeft">
+                <img class="contactPopUpImage" src="/Frontend/assets/img/join-logo.png" alt="join logo">
+                <p class="contactHeadline">Edit contact</p>
+                <div class="contactHeaderLine"></div>
+            </div>
+            <div id="iconInEditContact"></div>
+            <div class="contactRight">
+                <form class="contactForm" onsubmit="saveEditedContact(); return false;">
+                    <div class="contactFormInput">
+                        <div class="contactInputFields">
+                            <input type="text" id="editName" name="name" placeholder="Name" required>
+                            <img src="/Frontend/assets/img/person.png" alt="profile icon">
+                        </div>
+                        <div class="contactInputFields">
+                            <input type="text" id="editLastname" name="name" placeholder="Lastname" required>
+                            <img src="/Frontend/assets/img/person.png" alt="profile icon">
+                        </div>
+                        <div class="contactInputFields">
+                            <input type="email" id="editEmail" name="email" placeholder="Email" required>
+                            <img src="/Frontend/assets/img/mail.png" alt="email icon">
+                        </div>
+                        <div class="contactInputFields">
+                            <input type="tel" id="editPhone" name="phone" placeholder="Phone" required>
+                            <img src="/Frontend/assets/img/phone-icon.png" alt="phone icon">
+                        </div>
+                    </div>
+                    <div class="contactFormButtons">
+                        <!-- <button id="deleteButtonInForm" type="button" onclick="deleteContact()">Delete</button> -->
+                        <button id="saveEditButton" type="button" onclick="saveEditedContact()">Save <img
+                                src="/Frontend/assets/img/check.png" alt="confirm icon"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    `;
 }
