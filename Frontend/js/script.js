@@ -206,37 +206,47 @@ async function loadUserData() {
     let currentUser = localStorage.getItem('Data');
     let currentUserAsText = JSON.parse(currentUser);
     let currentUserId = currentUserAsText.id;
-    if (currentUserId === 19) {
-        console.log('Diese Funktion wird mit dem Gastzugang nicht unterstützt');
-
-        // Diese Funktion wird mit dem Gastzugang nicht unterstützt
-    } else {
-        let data;
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/user/${currentUserId}/`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            data = await response.json();
-            if (!response.ok) {
-                throw new Error(`Failed to load users: ${response.status}`);
-            }
-        } catch (error) {
-            console.error("Failed to load users from the server:", error);
+    let data;
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/user/${currentUserId}/`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        data = await response.json();
+        if (!response.ok) {
+            throw new Error(`Failed to load users: ${response.status}`);
         }
-        editContact();
-        let nameparts = data.username.split('_');
-        let firstName = nameparts[0];
-        let lastName = nameparts[1];
-
-        document.getElementById('editName').value = firstName;
-        document.getElementById('editLastname').value = lastName;
-        document.getElementById('editEmail').value = data.email;
-        document.getElementById('editPhone').value = data.phone;
+    } catch (error) {
+        console.error("Failed to load users from the server:", error);
     }
+    editContact();
+    let nameparts = data.username.split('_');
+    let firstName = nameparts[0];
+    let lastName = nameparts[1];
+
+    document.getElementById('editName').value = firstName;
+    document.getElementById('editLastname').value = lastName;
+    document.getElementById('editEmail').value = data.email;
+    document.getElementById('editPhone').value = data.phone;
+    let initialIcon = document.getElementById("iconInEditContact");
+    initialIcon.innerHTML = `
+        <div class="circle circleInDetailView responsiveCircle" style="background-color: ${data.color};">
+            ${calculateContactInitials(data.username.split("_"))}
+        </div>
+    `;
 }
+
+/**
+ * Calculates the contact initials based on name parts.
+ *
+ * @param {Array} nameParts - The parts of the contact's name.
+ * @returns {string} - The calculated initials.
+ */
+function calculateContactInitials(nameParts) {
+    return `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`;
+  }
 
 /**
  * Opens the pop-up for editing a contact.
@@ -248,6 +258,7 @@ async function loadUserData() {
 function editContact() {
     let container = document.getElementById('dynamicContainer');
     container.innerHTML = generateEditHTML();
+
     container.classList.add('dynamicContainer');
     let editContactOverlay = document.getElementById("editContactOverlay");
     let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
