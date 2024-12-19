@@ -124,11 +124,13 @@ function displaydiv(){
  * @param {int} i - the position of the contact in the Json-Array
  * @returns the first letter of the first and the last name for the displayed circle
  */
-function gettingInitials(i) {
-    let name = contacts[i]['Name'];
-    firstLetterName = name.toUpperCase().slice(0, 1);
-    firstLetterLastname = name.toUpperCase().slice(name.lastIndexOf(' ') + 1, name.lastIndexOf(' ') + 2);
-    return { firstLetterName, firstLetterLastname };
+function gettingInitials(i, name) {
+    // let name = contacts[i]['username'];
+    // firstLetterName = name.toUpperCase().slice(0, 1);
+    // firstLetterLastname = name.toUpperCase().slice(name.lastIndexOf(' ') + 1, name.lastIndexOf(' ') + 2);
+    // return { firstLetterName, firstLetterLastname };
+    let letter = name.toUpperCase().slice(0, 1);
+    return letter;
 }
 
 /**
@@ -137,14 +139,19 @@ function gettingInitials(i) {
  * @param {string} adress - carries the information about the id, where the Circle should be displayed
  */
 async function creatingCircle(i, adress, ChangeCircles) {
+    let contact = await getItemContacts();
     if(ChangeCircles === true){
-        contact = await getItemContacts();
         let j = contact.findIndex(contact => contact.id === i); 
         i = j;
         ChangeCircles = false;
     }
-    let firstLetterName = gettingInitials(i).firstLetterName;
-    let firstLetterLastname = gettingInitials(i).firstLetterLastname;
+    let name = contact[i].username;
+    let nameParts = name.split("_")
+    let firstname = nameParts[0];
+    let lastname = nameParts[1];
+    
+    let firstLetterName = gettingInitials(i, firstname);
+    let firstLetterLastname = gettingInitials(i, lastname);
     let color = contacts[i]['color'];
     document.getElementById(`${adress}`).innerHTML += `
     <div id="circle${i}" class="circle" style="background-color:${color}">${firstLetterName}${firstLetterLastname}</div>
@@ -156,8 +163,8 @@ async function creatingCircle(i, adress, ChangeCircles) {
  * @param {int} i - the position of the contact in the Json-Array
  */
 function gettingNames(i, contacts) {
-    let name = contacts[i]['Name'];
-    document.getElementById(`ContactName${contacts[i].id}`).innerHTML += `${name}`;
+    let name = contacts[i]['username'];
+    document.getElementById(`ContactName${contacts[i].user_id}`).innerHTML += `${name}`;
 }
 
 /**
@@ -213,22 +220,22 @@ function generateContactsContainer() {
  */
 async function generatingHTMLForContactsContainer() {
     let contactsContainer = document.getElementById('ContainerForAllPossibleContacts');
-    contactsContainer.innerHTML = '';  
+    contactsContainer.innerHTML = '';
     contacts = await getItemContacts();    
     for (let i = 0; i < contacts.length; i++) {
-        let adress = `contactCircle${contacts[i].id}`;
+        let adress = `contactCircle${contacts[i].user_id}`;
         contactsContainer.innerHTML += `
         <div id="contact${contacts[i].id}" class="contactbox contact">
-            <div id="contactCircle${contacts[i].id}"> 
+            <div id="contactCircle${contacts[i].user_id}"> 
 
             </div>
             <div>
-                <div id="ContactName${contacts[i].id}" class="contactName">
+                <div id="ContactName${contacts[i].user_id}" class="contactName">
 
                 </div>
             </div>
-            <div id="checkboxContainer${contacts[i].id}" class="checkboxContainer">
-                <input id="checkbox${contacts[i].id}" type="checkbox" class="checkboxes hover" onclick="event.stopPropagation(); checkCheckbox(${contacts[i].id}, event)">
+            <div id="checkboxContainer${contacts[i].user_id}" class="checkboxContainer">
+                <input id="checkbox${contacts[i].user_id}" type="checkbox" class="checkboxes hover" onclick="event.stopPropagation(); checkCheckbox(${contacts[i].user_id}, event)">
             </div>
         </div>`;
         creatingCircle(i, adress);

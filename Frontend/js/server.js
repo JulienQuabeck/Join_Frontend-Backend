@@ -31,7 +31,7 @@ function getPks(chosenContactsForNewTask) {
     let pks = [];
     for (i = 0; i < chosenContactsForNewTask.length; i++) {
         +
-            pks.push(chosenContactsForNewTask[i].id);
+            pks.push(chosenContactsForNewTask[i].user_id);
     }
     return pks;
 }
@@ -63,11 +63,17 @@ async function getAllInputs(e) {
         'colum': column ? column : 'todo',
         'contacts': assignedTo,
     }
+    console.log(task);
+    
     try {
+        let tokenData = localStorage.getItem('Data');
+        let tokenDataAsText = JSON.parse(tokenData);
+        const token = tokenDataAsText.token;
         const response = await fetch("http://127.0.0.1:8000/task/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Token ${token}`,
             },
             body: JSON.stringify(task),
         });
@@ -79,6 +85,11 @@ async function getAllInputs(e) {
     }
     clearForm();
     resetAssignedTo();
+}
+
+function resetAssignedTo(){
+    chosenContactsForNewTask = [];
+    document.getElementById('ContainerForAllChosenContacts').innerHTML = ``;
 }
 
 // getAllInputs(event);getConfirmationScreen()
@@ -102,8 +113,8 @@ async function getConfirmationScreen() {
 
 async function newTaskAddContacts(contactId, checkbox, isChecked) {
     let contacts = await getItemContacts(checkbox);
-    let contactData = contacts.find(contact => contact.id === contactId);
-    let PosOfArray = chosenContactsForNewTask.findIndex(contact => contact.id === contactData.id)
+    let contactData = contacts.find(contact => contact.user_id === contactId);
+    let PosOfArray = chosenContactsForNewTask.findIndex(contact => contact.user_id === contactData.user_id);
     if (PosOfArray == -1) {
         chosenContactsForNewTask.push(contactData);
     } else {
@@ -163,10 +174,14 @@ async function creatingCircleForEdit2(singleContact, adress) {
 
 async function updateTask(id, editedTask) {
     try {
+        let tokenData = localStorage.getItem('Data');
+        let tokenDataAsText = JSON.parse(tokenData);
+        const token = tokenDataAsText.token;
         const response = await fetch(`http://127.0.0.1:8000/task/${id}/`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Token ${token}`,
             },
             body: JSON.stringify(editedTask),
         });
@@ -232,10 +247,15 @@ async function creatingCircleForEdit(singleContact, adress) {
  * @param {int} i - the position of the contact in the Json-Array
  * @returns the first letter of the first and the last name for the displayed circle
  */
-function gettingInitialsForEdit(singleContact) {
-    let name = singleContact.Name;
-    firstLetterName = name.toUpperCase().slice(0, 1);
-    firstLetterLastname = name.toUpperCase().slice(name.lastIndexOf(' ') + 1, name.lastIndexOf(' ') + 2);
+function gettingInitialsForEdit(contact) {
+    //changed for AddTask
+    let name = contact.username;
+    let nameParts = name.split("_")
+    let firstname = nameParts[0];
+    let lastname = nameParts[1];
+    
+    firstLetterName = firstname.toUpperCase().slice(0, 1);
+    firstLetterLastname = lastname.toUpperCase().slice(0, 1);
     return { firstLetterName, firstLetterLastname };
 }
 
@@ -291,6 +311,7 @@ async function getAllContacts() {
  * This function checks, if a checkbox was checked, if so it will be checked after reopening the dropdown-menu
  */
 function checkIfCheckboxesWereChecked(firstloadedContacts) {
+// changed for addTask
     if (typeof task != "undefined") {        
         for (let j = 0; j < task.contacts.length; j++) {
             if(currentTaskFromServer){
@@ -302,7 +323,7 @@ function checkIfCheckboxesWereChecked(firstloadedContacts) {
     }
     if (chosenContactsForNewTask.length > 0 && loadContactsAgain == true && firstloadedContacts == true) {
         for (let i = 0; i < chosenContactsForNewTask.length; i++) {
-            checkbox = `checkbox${chosenContactsForNewTask[i].id}`;
+            checkbox = `checkbox${chosenContactsForNewTask[i].user_id}`;
             document.getElementById(checkbox).checked = true;
         }
         loadContactsAgain = false;

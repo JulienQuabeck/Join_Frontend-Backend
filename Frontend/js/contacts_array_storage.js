@@ -66,7 +66,7 @@ async function getItemContacts(checkbox) {
       checkboxStatus = true;
     }
   }
-  const url = "http://127.0.0.1:8000/contact/";
+  const url = "http://127.0.0.1:8000/user/";
   let ServerContacts = await fetch(url);
   const rawResponse = await ServerContacts.text();
   if (typeof checkbox != "undefined") {
