@@ -124,7 +124,7 @@ function displaydiv(){
  * @param {int} i - the position of the contact in the Json-Array
  * @returns the first letter of the first and the last name for the displayed circle
  */
-function gettingInitials(i, name) {
+function gettingInitials(name) {
     // let name = contacts[i]['username'];
     // firstLetterName = name.toUpperCase().slice(0, 1);
     // firstLetterLastname = name.toUpperCase().slice(name.lastIndexOf(' ') + 1, name.lastIndexOf(' ') + 2);

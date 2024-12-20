@@ -113,8 +113,8 @@ async function openTask(taskId) {
         taskPopUp.innerHTML = taskHtml;
         document.body.style.overflow = 'hidden';
         chosenContactsFromTask = task.contacts;        
-    }catch{
-        console.error("Error generatin task HTML", error);
+    }catch (error){
+        console.error("Error generating task HTML", error);
         taskPopUp.innerHTML = `<p>Error loading task details. Please try again later.</p>`
     }
     // taskPopUp.innerHTML = generateTaskHtml(task);

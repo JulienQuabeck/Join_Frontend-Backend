@@ -4,6 +4,7 @@
  * @returns {string} - The HTML string representing the task pop-up content.
  */ 
 async function generateTaskHtml(task) {
+
     let contactData = await loadContacts();  
     let contactsHtmlArray = await Promise.all(task.contacts.map(contact_id => generateContactHtml(contact_id, contactData)));
     let contactsHtml = contactsHtmlArray.join('');   
@@ -11,7 +12,6 @@ async function generateTaskHtml(task) {
     let subtasksHtml = subtasksHtmlArray.join('');
     let priorityText = generatePriorityText(task.priority);
     let priorityIcon = generatePriorityIcon(task.priority);
-
     return /*html*/ `
         <div class="pop-up-task-container" onclick="stopPropagation(event)">
             <div class="pop-up-task-header">
@@ -176,17 +176,23 @@ function generateEditContactHtml(contact) {
  * @returns {string} - The HTML string representing the contact.
  */
 async function generateContactHtml(contact_id, contactData) {
-    // load contact
-    let singleContact = contactData.find(contact => contact.id === contact_id)    
+    // load contact    
+    let singleContact = contactData.find(contactData => contactData.user_id === contact_id); 
+    let name = singleContact.username;
+    let nameparts = name.split('_');
+    let firstname = nameparts[0];
+    let lastname = nameparts[1];
+    let firstnameLetter = gettingInitials(firstname);
+    let lastnameLetter = gettingInitials(lastname);
     return  /*html*/ `
         <div class="pop-up-task-contact">
-            <div class="contact-label" style="background:${singleContact.color};">${singleContact.Name}</div>
-            <div class="contact-name">${singleContact.Name}</div>
+            <div class="contact-label" style="background:${singleContact.color};">${firstnameLetter}${lastnameLetter}</div>
+            <div class="contact-name">${firstname} ${lastname}</div>
         </div>`;
 }
 
 async function loadContacts(){
-    const url = `http://127.0.0.1:8000/contact/`;
+    const url = `http://127.0.0.1:8000/user/`;
     let ServerContacts = await fetch(url);
     const rawResponse = await ServerContacts.text();
     return JSON.parse(rawResponse);

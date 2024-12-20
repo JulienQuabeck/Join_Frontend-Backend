@@ -1,4 +1,5 @@
 from django.db import models
+from user_auth_app.models import User
 
 # nach Änderungen ausführen (in der env!!):
 # py manage.py makemigrations
@@ -18,7 +19,7 @@ class task(models.Model):
     # muss noch angepasst / überarbeitet werden
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=50)
-    contacts = models.ManyToManyField(contact)
+    contacts = models.ManyToManyField(User)
     date = models.DateField(max_length=50)#evtl. CharField
     priority = models.IntegerField()
     category = models.CharField(max_length=50)
