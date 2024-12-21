@@ -94,6 +94,7 @@ function resetAssignedTo(){
 
 // getAllInputs(event);getConfirmationScreen()
 async function handleFormSubmission(event) {
+    debugger
     try {
         event.preventDefault();
         await getAllInputs(event);
@@ -123,11 +124,39 @@ async function newTaskAddContacts(contactId, checkbox, isChecked) {
 }
 
 async function editingATask(contactId, checkbox, isChecked, pickedContactArrayPos, pickedContactValues) {
+    // try {
+    //     allTasksFromServer = await loadTasksFromServer();
+    //     const searchedTaskId = loadedTask.id;
+    //     const taskNo = allTasksFromServer.findIndex(task => task.id === searchedTaskId);
+    //     currentTaskFromServer = allTasksFromServer[taskNo];
+    //     pickedContactArrayPos = currentTaskFromServer.contacts.findIndex(contacts => String(contacts) === String(contactId));
+    //     pickedContactValues = allTasksFromServer[pickedContactArrayPos];
+    //     if (isChecked) {
+    //         addChosenContact(currentTaskFromServer, contactId);
+    //     } else {
+    //         deleteContactFromArray(currentTaskFromServer, contactId);
+    //     }
+    //     currentTaskFromServer.contacts.sort();
+    // } catch (error) {
+    //     console.error("Fehler beim Verarbeiten des Kontakts:", error);
+    // }
+    // await updateChosenContacts(currentTaskFromServer);
+    // createCirclesToChosenContactContainer2(currentTaskFromServer);
+    // console.log(currentTaskFromServer);
+
+    // if (checkbox.checked == false) {
+    //     checkbox.checked = true;
+    // } else {
+    //     checkbox.checked = false;
+    // }
     try {
-        allTasksFromServer = await loadTasksFromServer();
-        const searchedTaskId = loadedTask.id;
-        const taskNo = allTasksFromServer.findIndex(task => task.id === searchedTaskId);
-        currentTaskFromServer = allTasksFromServer[taskNo];
+        if(allTasksFromServer.length != 0){}
+        else{
+            allTasksFromServer = await loadTasksFromServer();
+            const searchedTaskId = loadedTask.id;
+            const taskNo = allTasksFromServer.findIndex(task => task.id === searchedTaskId);
+            currentTaskFromServer = allTasksFromServer[taskNo];
+        }
         pickedContactArrayPos = currentTaskFromServer.contacts.findIndex(contacts => String(contacts) === String(contactId));
         pickedContactValues = allTasksFromServer[pickedContactArrayPos];
         if (isChecked) {
@@ -141,13 +170,12 @@ async function editingATask(contactId, checkbox, isChecked, pickedContactArrayPo
     }
     await updateChosenContacts(currentTaskFromServer);
     createCirclesToChosenContactContainer2(currentTaskFromServer);
-    console.log(currentTaskFromServer);
-
     if (checkbox.checked == false) {
         checkbox.checked = true;
     } else {
         checkbox.checked = false;
     }
+    // TaskFromVariable = true;
 }
 
 async function updateChosenContacts(currentTaskFromServer) {
@@ -261,7 +289,7 @@ function gettingInitialsForEdit(contact) {
 
 async function getSingleContact(contacts, task, j) {
     let idOfContact = task.contacts[j];
-    let contact = contacts.find(contact => contact.id === idOfContact);
+    let contact = contacts.find(contact => contact.user_id === idOfContact);
     return contact;
 }
 
@@ -284,10 +312,12 @@ async function handleButtonClick(taskToEditId) {
     let tasks = await loadTasksFromServer();
     let taskToEdit = tasks.find(task => task.id === taskToEditId);
     taskToEdit.contacts = [];
+    debugger
     taskToEdit.contacts = currentTaskFromServer.contacts;
     taskToEdit.subtasks = newSubtasks;
     updateTask(taskToEdit.id, taskToEdit);
     editTask(taskToEdit.id);
+    loadedTask = "";
 }
 
 function saveSubtaskInTaskToEdit(subtasks) {
@@ -374,7 +404,7 @@ async function getContactsfromNewTask() {
     else {
         for (let j = 0; j < currentTaskFromServer.contacts.length; j++) {
             contacts = await getItemContacts();
-            let contactData = contacts.find(contact => contact.id === currentTaskFromServer.contacts[j]);
+            let contactData = contacts.find(contact => contact.user_id === currentTaskFromServer.contacts[j]);
             creatingCircleForEdit(contactData, adress);
         }
     }

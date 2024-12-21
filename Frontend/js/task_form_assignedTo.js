@@ -71,6 +71,7 @@ function openOverlay() {
 function checkCheckbox(contactId, event){
     event.stopImmediatePropagation(); // Verhindert die Weitergabe des Events an übergeordnete Elemente
     event.preventDefault();
+    debugger
     const checkbox = document.getElementById(`checkbox${contactId}`);
     //checkbox.checked = !checkbox.checked;
     addContactToArray(contactId);
@@ -149,9 +150,8 @@ async function creatingCircle(i, adress, ChangeCircles) {
     let nameParts = name.split("_")
     let firstname = nameParts[0];
     let lastname = nameParts[1];
-    
-    let firstLetterName = gettingInitials(i, firstname);
-    let firstLetterLastname = gettingInitials(i, lastname);
+    let firstLetterName = gettingInitials(firstname);
+    let firstLetterLastname = gettingInitials(lastname);
     let color = contacts[i]['color'];
     document.getElementById(`${adress}`).innerHTML += `
     <div id="circle${i}" class="circle" style="background-color:${color}">${firstLetterName}${firstLetterLastname}</div>
