@@ -1,6 +1,5 @@
 /**
  * Renders a contact item with circle and details.
- *
  * @param {HTMLElement} contactOverview - The element where contacts are rendered.
  * @param {string} circleStyle - The CSS style for the circle.
  * @param {string} circleClass - The class for the circle.
@@ -22,7 +21,9 @@ function renderContactItem(contactOverview, circleStyle, circleClass, contactIni
     contactOverview.innerHTML += contactItemHTML;
 }
 
-
+/**
+ * This function loads all Users
+ */
 async function loadUsers() {
     try {
         const response = await fetch(`http://127.0.0.1:8000/user/`, {
@@ -42,7 +43,6 @@ async function loadUsers() {
 
 /**
  * Opens a new contact group.
- *
  * @param {string} newLetter - The new letter group.
  * @param {HTMLElement} contactOverview - The element where contacts are rendered.
  */
@@ -52,16 +52,13 @@ function openLetterGroup(newLetter, contactOverview) {
                                       <hr class="groupDivider">`;
 }
 
-
 /**
-   * Closes the current contact group.
-   *
-   * @param {HTMLElement} contactOverview - The element where contacts are rendered.
-   */
+ * Closes the current contact group.
+ * @param {HTMLElement} contactOverview - The element where contacts are rendered.
+ */
 function closeLetterGroup(contactOverview) {
     contactOverview.innerHTML += `</div>`;
 }
-
 
 /**
 * Generates HTML for the "Add new contact" button.
@@ -75,10 +72,8 @@ function renderAddContactButton() {
     return addContactButtonHTML;
 }
 
-
 /**
  * Renders the detailed view of a contact, including name, buttons, and contact information.
- *
  * @param {Object} contact - The contact information.
  * @param {boolean} toEdit - True if in edit mode.
  */
@@ -108,20 +103,15 @@ function renderContactDetails(contact, toEdit) {
             <div class="phoneDetails"><a href="tel:${contact.phone}">${contact.phone}</a></div>
         </div>
     `;
-
     contactDetailsView.innerHTML = contactDetailsHTML;
-
     if (toEdit) {
         renderEditFields(contact);
     }
-
     document.getElementById("responsiveContactDetailBack").setAttribute('style', 'display:none !important');
 }
 
-
 /**
  * Renders the edit fields with the contact's information for editing.
- *
  * @param {Object} contact - The contact information.
  */
 function renderEditFields(contact) {
@@ -136,7 +126,6 @@ function renderEditFields(contact) {
     editLastnameField.value = lastName;
     editEmailField.value = contact.email;
     editPhoneField.value = contact.phone;
-
     let initialIcon = document.getElementById("iconInEditContact");
     initialIcon.innerHTML = `
         <div class="circle circleInDetailView responsiveCircle" style="background-color: ${contact.color};">
@@ -144,7 +133,6 @@ function renderEditFields(contact) {
         </div>
     `;
 }
-
 
 /**
  * Renders the buttons for editing and deleting a contact.
@@ -154,21 +142,11 @@ function renderEditFields(contact) {
 function renderEditDeleteButtons() {
     return `
     `;
-    //     <div class="contactEditButton" onclick="editContact()">
-    //         <img class="contactDetailsNameIcons" src="/Frontend/assets/img/edit-contact.png" alt="edit contact">
-    //         <p>Edit</p>
-    //     </div>
-    //     <div class="contactDeleteButton" onclick="deleteContact()">
-    //     <img class="contactDetailsNameIcons" src="/Frontend/assets/img/delete-contact.png" alt="delete contact">
-    //     <p>Delete</p>
-    // </div>
-
 }
 
 
 /**
  * Creates a loading animation for the save button, disabling it and displaying a loader.
- *
  * @param {HTMLElement} saveButton - The save button element.
  */
 function createLoadingAnimation(saveButton) {

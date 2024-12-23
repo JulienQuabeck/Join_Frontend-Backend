@@ -1,6 +1,5 @@
 let users = [];
 
-
 /**
  * Starts the animation of the opening logo.
  */
@@ -10,7 +9,6 @@ async function initEntry() {
     renderLogIn();
     setCurrentUsername('');
 }
-
 
 /**
  * Fetches list of users and it's according information from backend.
@@ -23,27 +21,10 @@ async function loadUsers() {
     }
 }
 
-
 /**
- * Save's the new users data in the backend.
- * @param {string} password - Value of the password's input field.
+ * This function register a new user
+ * @param {*} password the entered Password
  */
-// async function signUp(password) {
-//     let name = document.getElementById('name').value;
-//     let email = document.getElementById('email').value;
-//     debugger
-//     users.push({
-//         'name': name,
-//         'email': email,
-//         'password': password
-//     })
-//     await setItem('users', JSON.stringify(users));
-//     toggleClass('sign-up-confirmation', 'fly-in');
-//     toggleClass('confirmation-wrapper', 'dark-background');
-//     setTimeout(function() {
-//         renderLogIn();
-//     }, 800);
-// }
 async function signUp(password) {
     let name = document.getElementById('name').value;
     let lastname = document.getElementById('lastname').value
@@ -67,6 +48,10 @@ async function signUp(password) {
     }
 }
 
+/**
+ * This function saves the new user in the backend
+ * @param {*} users 
+ */
 async function addUserToServer(users) {
     try {
         const response = await fetch(`http://127.0.0.1:8000/register/`, {
@@ -86,11 +71,14 @@ async function addUserToServer(users) {
     }
 }
 
+/**
+ * This function generates a new color-code for the circles
+ * @returns a random color-code
+ */
 function generateRandomColor() {
     let randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
     return randomColor;
 }
-
 
 /**
  * Logs the user in.
@@ -107,6 +95,10 @@ async function logIn(event) {
     window.location.href = "summary.html";
 }
 
+/**
+ * This function searches for users in backend
+ * @param {*} data 
+ */
 async function searchForUserInBackend(data) {
     try {
         const response = await fetch(`http://127.0.0.1:8000/login/`, {
@@ -126,6 +118,10 @@ async function searchForUserInBackend(data) {
     }
 }
 
+/**
+ * This function saves user-data in the local storage
+ * @param {*} responseData 
+ */
 function saveDataInLocalStorage(responseData) {
     let dataAsText = JSON.stringify(responseData);
     localStorage.setItem('Data', dataAsText);
@@ -146,7 +142,6 @@ function findUser(emailInput, passwordInput) {
     }
 }
 
-
 /**
  * Checks if the value of the password's input field and the value of the comfirm password's field are equal.
  */
@@ -161,7 +156,6 @@ async function validatePassword(event) {
     }
 }
 
-
 /**
  * Animates the big Join logo at the start of the log in page.
  */
@@ -173,7 +167,6 @@ function animateStartLogo() {
     }
 }
 
-
 /**
  * Begins the animation of the starting logo when index.html has loaded on desktop devices.
  */
@@ -183,7 +176,6 @@ function desktopStartAnimation() {
         toggleClass('form-wrapper', 'fade-in-content');
     }, 600);
 }
-
 
 /**
  * Begins the animation of the starting logo when index.html has loaded on mobile devices.
@@ -198,7 +190,6 @@ function mobileStartAnimation() {
         mobileStartBackground.style.zIndex = -1;
     }, 1000);
 }
-
 
 /**
  * Renders the form for logging in.
@@ -247,7 +238,6 @@ function logInFormTemplate() {
     `;
 }
 
-
 /**
  * Checks if input field for password is empty.
  */
@@ -265,7 +255,6 @@ function checkIfEmpty(inputId, imageId) {
     }
 }
 
-
 /**
  * Toggles visibility of password in its input field.
  * @param {string} id - The input field's id.
@@ -281,7 +270,6 @@ function togglePasswordVisibility(inputId, imageId) {
         changeImageSource(imageId, '/assets/img/password-hidden.png');
     }
 }
-
 
 /**
  * Sets up log in for guest user by disabling the form validation.
@@ -325,7 +313,6 @@ function checkSignUpForm() {
     }
 }
 
-
 /**
  * Renders the form for signing up.
  */
@@ -335,7 +322,6 @@ function renderSignUp() {
     checkIfEmpty('password', 'password-image');
     checkIfEmpty('confirm-password', 'confirm-password-image');
 }
-
 
 /**
  * HTML template for better readability.

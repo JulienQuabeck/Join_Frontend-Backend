@@ -1,10 +1,8 @@
 /**
  * Generates HTML content for the task pop-up.
- *
  * @returns {string} - The HTML string representing the task pop-up content.
  */ 
 async function generateTaskHtml(task) {
-
     let contactData = await loadContacts();  
     let contactsHtmlArray = await Promise.all(task.contacts.map(contact_id => generateContactHtml(contact_id, contactData)));
     let contactsHtml = contactsHtmlArray.join('');   
@@ -64,6 +62,11 @@ async function generateTaskHtml(task) {
     `;
 }
 
+/**
+ * This function loads a single contact
+ * @param {*} id 
+ * @returns 
+ */
 async function loadSingleContacts(id){
     const url = `http://127.0.0.1:8000/contact/${id}/`
     try{
@@ -81,7 +84,6 @@ async function loadSingleContacts(id){
   
 /**
  * Generates HTML for the task editing popup.
- *
  * @param {Object} taskToEdit - The task object being edited.
  * @returns {string} - HTML markup for the task editing popup.
  */
@@ -161,7 +163,6 @@ function generateEditTaskHtml(taskToEdit, contacts) { // diese Funktion nicht as
 
 /**
  * Generates HTML for an edit contact and returns it as a string.
- *
  * @param {Object} contact - The contact object.
  * @returns {string} - The HTML string for the edit contact.
  */
@@ -171,7 +172,6 @@ function generateEditContactHtml(contact) {
 
 /**
  * Generates HTML for a contact in the pop-up task details.
- *
  * @param {Object} contact - The contact object containing information.
  * @returns {string} - The HTML string representing the contact.
  */
@@ -191,6 +191,10 @@ async function generateContactHtml(contact_id, contactData) {
         </div>`;
 }
 
+/**
+ * This function loads all users
+ * @returns all users
+ */
 async function loadContacts(){
     const url = `http://127.0.0.1:8000/user/`;
     let ServerContacts = await fetch(url);
@@ -200,11 +204,10 @@ async function loadContacts(){
 
 /**
  * Generates HTML for a subtask in the pop-up task details.
- *
  * @param {Object} subtask - The subtask object containing information.
  * @returns {string} - The HTML string representing the subtask.
  */
-async function generateSubtaskHtml(subtask, taskId) {//!!!!!!!!!!!!!!
+async function generateSubtaskHtml(subtask, taskId) {
     return  /*html*/ `
         <div class="pop-up-task-subtask">
             <input type="checkbox" onchange="changeSubtaskStatus(this, ${subtask.id}, ${taskId})" ${subtask.done ? 'checked' : ''} >
@@ -214,7 +217,6 @@ async function generateSubtaskHtml(subtask, taskId) {//!!!!!!!!!!!!!!
 
 /**
  * Generates the HTML for a task card.
- *
  * @param {string} cardId - The unique identifier for the card.
  * @param {Object} task - The task object containing information to be displayed on the card.
  * @returns {string} - The HTML string representing the task card.
@@ -249,7 +251,6 @@ function generateCardHtml(cardId, task) {
 
 /**
  * Generates a textual representation of priority based on numerical values.
- *
  * @param {number} priority - The numerical priority value (1, 2, or 3).
  * @returns {string} - The corresponding priority text ('Urgent', 'Medium', or 'Low').
  */
@@ -269,7 +270,6 @@ function generatePriorityText(priority) {
 
 /**
  * Generates HTML for a priority icon based on the specified priority level.
- *
  * @param {string} priority - The priority level ('Low', 'Medium', or 'Urgent').
  * @returns {string} - The HTML string representing the priority icon.
  */
@@ -286,7 +286,6 @@ function generatePriorityIcon(priority) {
 
 /**
  * Generates HTML for editing the text of a subtask.
- *
  * @param {string} taskId - The ID of the task.
  * @param {string} subtaskId - The ID of the subtask.
  * @param {string} text - The current text of the subtask.
@@ -308,7 +307,6 @@ function generateEditSubtaskTextHtml(taskId, subtaskId, text) {
 
 /**
  * Generates the HTML for a no tasks card.
- *
  * @returns {string} - The HTML string representing the container.
  */
 function generateNoTaskHtml() {

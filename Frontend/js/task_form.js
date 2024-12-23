@@ -33,8 +33,7 @@ function resetPrio() {
     `;
 }
 
-/**
- * 
+/** 
  * @param {string} Prio - changes the given number i to a Prioity in string-form
  * @param {int} i - gives the function the Prio in int (1 = Urgent / 2 = Medium / 3 = Low Priority)
  * @param {int} currentchosenPrio - safe the current chosen Priority in int (like above)
@@ -52,7 +51,6 @@ function changeItoPrioInString(Prio, i) {
     }
 
 /** Reset the HTML and changes the color and the image for the chosen Prio
- * 
  * @param {int} i - gives the function the Prio in int (1 = Urgent / 2 = Medium / 3 = Low Priority)
  */
 function choosePrio(i) {
@@ -62,7 +60,6 @@ function choosePrio(i) {
 }
 
 /** changes the img for the chosen Prio
- * 
  * @param {string} Prio - safes the chosen Priority in string-form
  */
 function changeImgOfPrio(Prio) {
@@ -70,8 +67,7 @@ function changeImgOfPrio(Prio) {
     document.getElementById(`${Prio}Img`).src = img2;
 }
 
-/**changes the backgroundcolor of the Prio-div
- * 
+/**changes the backgroundcolor of the Prio-div 
  * @param {string} Prio - changes the given number i to a Prioity in string-form
  * @param {int} i - gives the function the Prio in int (1 = Urgent / 2 = Medium / 3 = Low Priority)
  */
@@ -140,17 +136,14 @@ function showSubtasks() {
     }
 }
 
-
 /**
  * Befüllt das Subtask-Formular mit den Informationen des ausgewählten Subtasks und löscht ihn anschließend aus der Bearbeitungsliste.
- *
  * @param {number} i - Der Index des ausgewählten Subtasks.
  */
 function editSubtask(i) {
     document.getElementById('subtask').value = subtasks[i]['name'];
     deleteSubtaskInEdit(i);
 }
-
 
 /**
  * This functions starts the Subtask adding process
@@ -176,6 +169,11 @@ function deleteSubtaskInEdit(i) {
     }
 }
 
+/**
+ * This function collects all primary keys (pks) of the contacts
+ * @param {*} chosenContactsJson 
+ * @returns 
+ */
 async function collectAllPk(chosenContactsJson){
     pks= []
     for (i = 0; i < chosenContactsJson.length; i++){
@@ -215,6 +213,9 @@ function clearForm() {
     resetPrio();
 }
 
+/**
+ * This function resets the AssignedTo-section
+ */
 function resetAssignedTo(){
     chosenContactsForNewTask = [];
     document.getElementById('ContainerForAllChosenContacts').innerHTML = ``;

@@ -23,6 +23,10 @@ async function initSummary() {
     renderTasksAwaitingFeedback();
 }
 
+/**
+ * This function loads all tasks from the server
+ * @returns all tasks
+ */
 async function loadTasksFromServer(){
     const url = "http://127.0.0.1:8000/task/"
     let tasks = await fetch(url);
@@ -30,6 +34,10 @@ async function loadTasksFromServer(){
     return JSON.parse(rawResponse);
 }
 
+/**
+ * This function calculates the sum of tasks in different colums of the board
+ * @param {*} tasks 
+ */
 async function countSumsForColums(tasks){
     sumDone = 0;
     sumToDos = 0;
@@ -46,7 +54,6 @@ async function countSumsForColums(tasks){
     }
 }
 
-
 /**
  * Renders the welcome message on the summary page.
  */
@@ -59,7 +66,6 @@ function renderWelcomeMessage() {
         renderMessageDesktop(username, time);
     }
 }
-
 
 /**
  * Renders the welcome message when on mobile device.
@@ -76,7 +82,6 @@ function renderMessageMobile(username, time) {
     }, 1500);
 }
 
-
 /**
  * Renders the welcome message when on desktop.
  * @param {string} username - Name of the current user.
@@ -87,7 +92,6 @@ function renderMessageDesktop(username, time) {
     let usernameWrapper = document.getElementById('username-wrapper');
     chooseMessage(welcomeMessage, usernameWrapper, username, time);
 }
-
 
 /**
  * Chooses how to greet, depending on the time.
@@ -115,7 +119,6 @@ function chooseMessage(welcomeMessage, usernameWrapper, username, time) {
     }
 }
 
-
 /**
  * Renders the total amount of tasks on the board.
  */
@@ -125,7 +128,6 @@ function renderTasksInBoard() {
     tasksInBoard.innerHTML = tasksAmount;
 }
 
-
 /**
  * Sorts the tasks beginning with the latest task.
  */
@@ -134,7 +136,6 @@ function sortTasks() {
         return new Date(a.date) - new Date(b.date);
     });
 }
-
 
 /**
  * Renders the upcoming task and its priority.
@@ -151,7 +152,6 @@ function renderUpcomingPrio(tasks) {
     upcomingTasks.innerHTML = upcomingTasksAmount;
 }
 
-
 /**
  * Renders the due date of the upcoming task.
  */
@@ -166,47 +166,37 @@ function renderUpcomingDate(tasks) {
     upcomingMessage.innerHTML = "Upcoming deadline";
 }
 
-
 /**
  * Renders the amount of tasks which are in progress.
  */
 function renderTasksInProgress() {
     let tasksInProgress = document.getElementById('in-progress-amount');
-    // let tasksAmount = allTasks.filter(t => t['colum'] == 'in-progress').length; //tasks --> allTasks
     tasksInProgress.innerHTML = sumInProgress;
 }
-
 
 /**
  * Renders the amount of tasks which await feedback.
  */
 function renderTasksAwaitingFeedback() {
     let tasksAwaitingFeedback = document.getElementById('awaiting-feedback-amount');
-    //let tasksAmount = allTasks.filter(t => t['colum'] == 'await-feedback').length; //tasks --> allTasks
     tasksAwaitingFeedback.innerHTML = sumAwaitFeedback;
 }
-
 
 /**
  * Renders the amount of tasks which have to be done.
  */
 function renderTasksInToDo() {
     let tasksToDo = document.getElementById('to-do-amount');
-    // let tasksAmount = allTasks.filter(t => t['colum'] == 'todo').length; //tasks --> allTasks
     tasksToDo.innerHTML = sumToDos;
-    ;
 }
-
 
 /**
  * Renders the amount of tasks which are done.
  */
 function renderTasksDone() {
     let tasksDone = document.getElementById('done-amount');
-    // let tasksAmount = allTasks.filter(t => t['colum'] == 'done').length; //tasks --> allTasks
     tasksDone.innerHTML = sumDone;
 }
-
 
 /**
  * Converts the priority from a number to a string.

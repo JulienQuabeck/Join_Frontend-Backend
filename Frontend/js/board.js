@@ -85,16 +85,13 @@ async function openAddTask(id) {
 
 /**
  * Searches tasks based on the entered search term and renders the matching tasks.
- *
  * @param {Event} e - The event object that triggered the function call.
  */
 function search(e) {
     e.preventDefault();
     let searchTermInput = document.getElementById('search-text');
-
     let searchTerm = searchTermInput.value.toLowerCase();
     let searchedTasks = allTasks.filter(task => task.title.toLowerCase().includes(searchTerm));
-
     clearAllColumns();
     renderTasks(searchedTasks);
     searchTermInput.value = '';
@@ -117,10 +114,11 @@ async function openTask(taskId) {
         console.error("Error generating task HTML", error);
         taskPopUp.innerHTML = `<p>Error loading task details. Please try again later.</p>`
     }
-    // taskPopUp.innerHTML = generateTaskHtml(task);
-    // document.body.style.overflow = 'hidden';
 }
 
+/**
+ * This function loads all Contacts
+ */
 function getAllContacts2(){
     flipTheImage();
     displayContacts();
@@ -129,6 +127,9 @@ function getAllContacts2(){
     checkScreenWidth();
 }
 
+/**
+ * This function checks, if a checkbox was already checked or not
+ */
 function checkIfCheckboxesWereChecked2(){
     for (let j = 0; j < chosenContactsFromTask.length; j++) {
         let id = chosenContactsFromTask[j];
@@ -136,13 +137,22 @@ function checkIfCheckboxesWereChecked2(){
     }
 }
 
+/**
+ * This function loads a single task from the backend
+ * @param {*} taskId  = id of the task
+ * @returns the single task as JSON
+ */
 async function loadSingleTask(taskId){
+    let tokenData = localStorage.getItem('Data');
+    let tokenDataAsText = JSON.parse(tokenData);
+    const token = tokenDataAsText.token;
     const url = `http://127.0.0.1:8000/task/${taskId}/`;
     try{
         let response = await fetch(url, {
             method:'GET',
             headers:{
                 'Content-Type': 'application/json',
+                "Authorization": `Token ${token}`,
             },
         });
         if (!response.ok) {
@@ -157,7 +167,6 @@ async function loadSingleTask(taskId){
 
 /**
  * Edits an existing task based on the provided taskId.
- *
  * @param {string} taskId - The unique identifier of the task to be edited.
  */
 async function editTask(taskId) {
@@ -167,6 +176,9 @@ async function editTask(taskId) {
     clearVar();
 }
 
+/**
+ * This function clears some Vars
+ */
 function clearVar(){
 chosenContactsFromTask = [];
 newSubtasks = [];
@@ -175,7 +187,6 @@ editedTask = [];
 
 /**
  * Löscht eine Teilaufgabe aus einer bestimmten Aufgabe und aktualisiert die Anzeige der Teilaufgaben.
- *
  * @param {string} taskId - Die ID der Aufgabe, zu der die Teilaufgabe gehört.
  * @param {string} subtaskId - Die ID der zu löschenden Teilaufgabe.
  */
@@ -188,12 +199,21 @@ async function deleteSubtask(taskId, subtaskId) {
     showSubtasksInEdit(taskId, task.subtasks);
 }
 
+/**
+ * This function updates a task on the backend
+ * @param {*} id task id
+ * @param {*} updatedData the new data
+ */
 async function updateSingleElemete(id, updatedData){
     try {
+        let tokenData = localStorage.getItem('Data');
+        let tokenDataAsText = JSON.parse(tokenData);
+        const token = tokenDataAsText.token;
         const response = await fetch(`http://127.0.0.1:8000/task/${id}/`, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Token ${token}`,
           },
           body: JSON.stringify(updatedData),
         });
@@ -210,7 +230,6 @@ async function updateSingleElemete(id, updatedData){
 
 /**
  * Renders a list of subtasks in the edit subtasks section.
- *
  * @param {Array} subtasks - An array of subtask objects.
  */
 function showSubtasksInEdit(taskId, subtasks) {
@@ -237,7 +256,6 @@ function showSubtasksInEdit(taskId, subtasks) {
 
 /**
  * Displays the edit subtask field with the current subtask text.
- *
  * @param {string} taskId - The ID of the task.
  * @param {string} subtaskId - The ID of the subtask.
  */
@@ -271,7 +289,6 @@ async function showEditSubtaskField(taskId, subtaskId) {
     listOfSubtasks.splice(ArrayPosition, 1);
 }
 
-
 /**
  * Edits the text of a subtask and updates the display.
  *
@@ -295,7 +312,6 @@ async function editSubtaskText(taskId, subtaskId) {
 
 /**
  * Handles the addition of a subtask to a specific task by updating the task's subtasks array and clearing the input field.
- *
  * @param {Event} e - The event object.
  * @param {string} taskId - The ID of the task to which the subtask will be added.
  */
@@ -320,11 +336,9 @@ async function addSubtaskInEdit(e, taskId) {
  */
 function resetPriorityButtons() {
     const priorities = ['low', 'medium', 'urgent'];
-
     priorities.forEach(priority => {
         const button = document.getElementById(priority);
         const img = document.getElementById(`edit-${priority}-img`);
-
         button.style.color = '';
         button.style.background = '';
         img.src = `../assets/img/board/prio-${priority}.svg`;
@@ -333,7 +347,6 @@ function resetPriorityButtons() {
 
 /**
  * Changes the priority of a task and updates the UI.
- *
  * @param {number} btnId - ID of the priority button.
  */
 function changePriority(btnId) {
@@ -342,10 +355,8 @@ function changePriority(btnId) {
     currPriority = btnId;
 }
 
-
 /**
  * Handles the CSS changes for priority buttons.
- *
  * @param {string} priority - Priority level.
  */
 function handleEditPriority(priority) {
@@ -363,10 +374,8 @@ function handleEditPriority(priority) {
     img.src = `/Frontend/assets/img/board/prio-${idButton}-white.svg`;
 }
 
-
 /**
  * Sets the background color for a priority button.
- *
  * @param {string} idButton - ID of the priority button.
  * @returns {string} - Background color for the button.
  */
@@ -386,7 +395,6 @@ function setEditButtonBackground(idButton) {
 
 /**
  * Retrieves a task based on its unique identifier.
- *
  * @param {number} id - The unique identifier of the task.
  * @returns {Object} - The task object.
  */
@@ -396,15 +404,18 @@ function getTask(id) {
 
 /**
  * Deletes a task with the specified ID.
- *
  * @param {number} id - The ID of the task to be deleted.
  */
 async function deleteTask(id) {
     try {
+        let tokenData = localStorage.getItem('Data');
+        let tokenDataAsText = JSON.parse(tokenData);
+        const token = tokenDataAsText.token;
       const response = await fetch(`http://127.0.0.1:8000/task/${id}/`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Token ${token}`,
         },
       });
     if (!response.ok) {
@@ -416,6 +427,11 @@ async function deleteTask(id) {
   }
 }
 
+/**
+ * This function loads HTML for the confirmation for a delete
+ * @param {*} id 
+ * @returns HTML Element
+ */
 function confirmDeleteTask(id) {
     return document.getElementById('pop-up').innerHTML = /*html*/ `
         <div class="pop-up-delete-task-container">
@@ -436,7 +452,6 @@ function confirmDeleteTask(id) {
 
 /**
  * Retrieves the index of a task in the tasks array based on its ID.
- *
  * @param {number} taskId - The ID of the task to find in the tasks array.
  * @returns {number} - The index of the task in the tasks array.
  */
@@ -455,33 +470,27 @@ function closeTask(id) {
 
 /**
  * Stops the event propagation to prevent it from reaching the parent elements.
- *
  * @param {Event} event - The event for which propagation should be stopped.
  */
 function stopPropagation(event) {
     event.stopPropagation();
 }
 
-
 /**
  * Handles the 'dragover' event to allow dropping elements.
- *
  * @param {Event} ev - The dragover event.
  */
 function allowDrop(ev) {
     ev.preventDefault();
 }
 
-
 /**
  * Initiates the drag operation for a specific element.
- *
  * @param {number} id - The unique identifier of the dragged element.
  */
 function startDragging(id) {
     currentDraggedElement = id;
 }
-
 
 /**
  * Moves the dragged element to a new column.
@@ -495,26 +504,21 @@ async function moveTo(columnId) {
     renderTasks();
 }
 
-
 /**
  * Highlights the column if task is dragged over
- *
  * @param {string} id - Id of highlightet column
  */
 function highlight(id) {
     document.getElementById(id).classList.add('dragAreaHighlight');
 }
 
-
 /**
  * Removes the highlight when task is not longer dragged over the column
- *
  * @param {string} id - Id of highlightet column
  */
 function removeHighlight(id) {
     document.getElementById(id).classList.remove('dragAreaHighlight');
 }
-
 
 /**
  * Clears the content of all columns.
@@ -526,10 +530,8 @@ function clearAllColumns() {
     }
 }
 
-
 /**
  * Iterates through an array of columns and checks each column for tasks. If a column has no tasks, a no tasks card is generated and appended.
- *
  * @param {Array<HTMLElement>} columns - An array of column elements to iterate through.
  */
 function iterateByEachColumn(columns) { 
@@ -539,10 +541,8 @@ function iterateByEachColumn(columns) {
     }
 }
 
-
 /**
  * Checks if a column has child nodes (tasks). If not, generates and appends HTML for a no tasks card.
- *
  * @param {HTMLElement} column - The column element to check for tasks.
  */
 function checkColumnForTasks(column) {
@@ -551,21 +551,17 @@ function checkColumnForTasks(column) {
     }
 }
 
-
 /**
  * Renders a task card and appends it to the specified column element.
- *
  * @param {Object} task - The task object to be rendered.
  * @param {HTMLElement} column - The column element where the card will be appended.
  */
 function renderCard(task, column) {
     column.innerHTML += generateCardHtml(`card${task.id}`, task);
-
 }
 
 /**
  * Sets the progress of subtasks for a given task.
- *
  * @param {Object} task - The task object containing information about subtasks.
  * @param {string} task.id - The unique identifier of the task.
  * @param {number} task.subtasksProgress - The current progress of subtasks.
@@ -581,7 +577,6 @@ function setProgressSubtasks(task) {
 
 /**
  * Capitalizes the first letter of a string.
- *
  * @param {string} string - The input string.
  * @returns {string} - The string with the first letter capitalized.
  */

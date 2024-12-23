@@ -1,16 +1,12 @@
-// const STORAGE_TOKEN = 'DR6FZK1MTGPR11C93C73PUGXTKY05AJ4CNFZMV8P';
-// const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
 let allTasks = [];
 let column = '';
 let allSubtasks = [];
-
 
 /**
  * Initializes certain functions once the body of the page has fully loaded.
  * @param {string} id - Id of the current navigation item which is supposed to be highlighted.
  */
 async function init(id) {
-    // await loadTasks();
     await includeHTML();
     checkLogInStatus();
     changeNavigationHighlight(id);
@@ -35,7 +31,6 @@ async function includeHTML() {
     }
 }
 
-
 /**
  * Stores data in backend.
  * @param {string} key - The name which the data is saved with.
@@ -45,18 +40,6 @@ async function setItem(key, value) {
     const payload = { key, value, token: STORAGE_TOKEN };
     fetch(STORAGE_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json());
 }
-
-
-/**
- * Fetches data from backend.
- * @param {string} key - The name which the data is saved with.
- * @returns The fethed data from backend.
- */
-// async function getItem(key) {
-//     const url = `${STORAGE_URL}?key=${key}&token=${STORAGE_TOKEN}`;
-//     return fetch(url).then(response => response.json()).then(response => response.data.value);
-// }
-
 
 /**
  * Toggles a class.
@@ -76,7 +59,6 @@ function toggleClass(id, classname) {
     document.getElementById(id).classList.toggle(classname);
 }
 
-
 /**
  * Changes the highlighted navigation element, depending on which site you are on.
  * @param {string} id - The id of the navigation element to be highlighted.
@@ -87,7 +69,6 @@ function changeNavigationHighlight(id) {
     let newHighlighted = document.getElementById(id);
     checkIfOnHelpSite(id, newHighlighted)
 }
-
 
 /**
  * Checks wheter or not the help page is open.
@@ -101,7 +82,6 @@ function checkIfOnHelpSite(id, newHighlighted) {
     }
 }
 
-
 /**
  * Identifies the protocol method of the current site.
  * @returns The protocol method as a string.
@@ -111,7 +91,6 @@ function getProtocol() {
     return protocol;
 }
 
-
 /**
  * Identifies the host of the current site.
  * @returns The host as a string.
@@ -120,7 +99,6 @@ function getHost() {
     let host = window.location.host;
     return host;
 }
-
 
 /**
  * Changes the url of a given image.
@@ -132,7 +110,6 @@ function changeImageSource(id, url) {
     image.src = url;
 }
 
-
 /**
  * Loggs out the current user.
  */
@@ -140,7 +117,6 @@ function logOut() {
     toggleClass('profile-nav-wrapper', 'hide');
     localStorage.removeItem("Data")
 }
-
 
 /**
  * Redirects user to log in page to prevent unauthorized users to see protected information such as board.html for example.
@@ -156,7 +132,6 @@ function checkLogInStatus() {
     }
 }
 
-
 /**
  * Sets the current username in the session storage.
  * @param {string} username - The currently loggin in user's username.
@@ -164,7 +139,6 @@ function checkLogInStatus() {
 function setCurrentUsername(username) {
     sessionStorage.setItem('data', username);
 }
-
 
 /**
  * Gets the current username from session storage.
@@ -175,15 +149,6 @@ function getCurrentUsername() {
     return currentUsername;
 }
 
-
-/**
- * Loads the saved tasks from the backend.
- */
-// async function loadTasks() {
-//     allTasks = JSON.parse(await getItem('AllTasks'));
-// }
-
-
 /**
  * Locks the screen orientation depending on which device the user is using.
  */
@@ -193,8 +158,10 @@ function lockScreenOrientation() {
     }
 }
 
-
-
+/**
+ * 
+ * @returns the currentUsername
+ */
 function logInCnodition() {
     return getCurrentUsername() === '' && window.location.pathname === '/html/legal_notice.html' ||
         getCurrentUsername() === '' && window.location.pathname === '/html/privacy_policy.html' ||
@@ -202,6 +169,9 @@ function logInCnodition() {
         getCurrentUsername() === undefined && window.location.pathname === '/html/privacy_policy.html';
 }
 
+/**
+ * This function loads userdata
+ */
 async function loadUserData() {
     let currentUser = localStorage.getItem('Data');
     let currentUserAsText = JSON.parse(currentUser);
@@ -225,7 +195,6 @@ async function loadUserData() {
     let nameparts = data.username.split('_');
     let firstName = nameparts[0];
     let lastName = nameparts[1];
-
     document.getElementById('editName').value = firstName;
     document.getElementById('editLastname').value = lastName;
     document.getElementById('editEmail').value = data.email;
@@ -240,7 +209,6 @@ async function loadUserData() {
 
 /**
  * Calculates the contact initials based on name parts.
- *
  * @param {Array} nameParts - The parts of the contact's name.
  * @returns {string} - The calculated initials.
  */
@@ -250,7 +218,6 @@ function calculateContactInitials(nameParts) {
 
 /**
  * Opens the pop-up for editing a contact.
- * 
  * @param {string} name - The name of the contact.
  * @param {string} email - The email of the contact.
  * @param {string} phone - The phone number of the contact.
@@ -258,11 +225,9 @@ function calculateContactInitials(nameParts) {
 function editContact() {
     let container = document.getElementById('dynamicContainer');
     container.innerHTML = generateEditHTML();
-
     container.classList.add('dynamicContainer');
     let editContactOverlay = document.getElementById("editContactOverlay");
     let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
-
     responsiveAddContactButton.setAttribute('style', 'display:none !important');
     editContactOverlay.style.display = "flex";
 }
@@ -273,12 +238,15 @@ function editContact() {
 function closePopUp() {
     let editContactOverlay = document.getElementById("editContactOverlay");
     let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
-
     editContactOverlay.style.display = "none";
     responsiveAddContactButton.style.zIndex = "1200";
     responsiveAddContactButton.style.display = "flex";
 }
 
+/**
+ * This function generates HTML-Code for editing contact
+ * @returns HTML code for editing contacts
+ */
 function generateEditHTML() {
     return `
     <div id="responsiveAddContactButton" onclick="addContact()">

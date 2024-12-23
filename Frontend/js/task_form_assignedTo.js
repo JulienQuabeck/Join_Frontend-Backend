@@ -4,6 +4,9 @@ let allContactsFromServer = [];
 let allTasksFromServer = [];
 let firstloadContacts = true;
 
+/**
+ * This function loads all necessary components for the site
+ */
 async function onInit() {
     try {
         let allTasks = await loadTasksFromServer();
@@ -69,14 +72,18 @@ function openOverlay() {
  * @param {int} i - number of the checkbox
  */
 function checkCheckbox(contactId, event){
-    event.stopImmediatePropagation(); // Verhindert die Weitergabe des Events an übergeordnete Elemente
+    event.stopImmediatePropagation();
     event.preventDefault();
     debugger
     const checkbox = document.getElementById(`checkbox${contactId}`);
-    //checkbox.checked = !checkbox.checked;
     addContactToArray(contactId);
 }
 
+/**
+ * This function deletes Contacts from an array
+ * @param {*} currentTaskFromServer 
+ * @param {*} contactId 
+ */
 function deleteContactFromArray(currentTaskFromServer, contactId){
     const index = task.contacts.findIndex(id => id === contactId);
     const ArrayPos = currentTaskFromServer.contacts.findIndex(contact =>  String(contact) === String(contactId)); 
@@ -113,7 +120,6 @@ function createCirclesToChosenContactContainer(chosenContact) {
  */
 function displaydiv(){
     if (chosenContactsFromTask.length == 0){
-        //nicht chosenContacts
         document.getElementById('ContainerForAllChosenContacts').classList.add('d-none'); 
     }else{
         document.getElementById('ContainerForAllChosenContacts').classList.remove('d-none');
@@ -126,10 +132,6 @@ function displaydiv(){
  * @returns the first letter of the first and the last name for the displayed circle
  */
 function gettingInitials(name) {
-    // let name = contacts[i]['username'];
-    // firstLetterName = name.toUpperCase().slice(0, 1);
-    // firstLetterLastname = name.toUpperCase().slice(name.lastIndexOf(' ') + 1, name.lastIndexOf(' ') + 2);
-    // return { firstLetterName, firstLetterLastname };
     let letter = name.toUpperCase().slice(0, 1);
     return letter;
 }
@@ -187,7 +189,6 @@ function HtmlForFilter(search, ContactList){
     for (let i = 0; i < contacts.length; i++) {
         let adress = `contactCircle${i}`;
         let name = contacts[i]['Name'];
-        
         if (name.toLowerCase().includes(search)) {
             ContactList.innerHTML += `
             <div id="contact${contacts[i].id}" class="contactbox contact">
@@ -227,12 +228,9 @@ async function generatingHTMLForContactsContainer() {
         contactsContainer.innerHTML += `
         <div id="contact${contacts[i].id}" class="contactbox contact">
             <div id="contactCircle${contacts[i].user_id}"> 
-
             </div>
             <div>
-                <div id="ContactName${contacts[i].user_id}" class="contactName">
-
-                </div>
+                <div id="ContactName${contacts[i].user_id}" class="contactName"></div>
             </div>
             <div id="checkboxContainer${contacts[i].user_id}" class="checkboxContainer">
                 <input id="checkbox${contacts[i].user_id}" type="checkbox" class="checkboxes hover" onclick="event.stopPropagation(); checkCheckbox(${contacts[i].user_id}, event)">

@@ -5,6 +5,10 @@ let newContactsForServer = [];
 let loadContactsAgain;
 let editingTask;
 
+/**
+ * This function loads all tasks from the server
+ * @returns tasks
+ */
 async function loadTasksFromServer() {
     const url = "http://127.0.0.1:8000/task/";
     let tasks = await fetch(url);
@@ -27,6 +31,11 @@ async function addContactToArray(contactId) {
     }
 }
 
+/**
+ * This function collects all primary keys (pks) for additing a new task
+ * @param {*} chosenContactsForNewTask 
+ * @returns 
+ */
 function getPks(chosenContactsForNewTask) {
     let pks = [];
     for (i = 0; i < chosenContactsForNewTask.length; i++) {
@@ -63,8 +72,6 @@ async function getAllInputs(e) {
         'colum': column ? column : 'todo',
         'contacts': assignedTo,
     }
-    console.log(task);
-    
     try {
         let tokenData = localStorage.getItem('Data');
         let tokenDataAsText = JSON.parse(tokenData);
@@ -87,14 +94,19 @@ async function getAllInputs(e) {
     resetAssignedTo();
 }
 
-function resetAssignedTo(){
+/**
+ * This function resets all assignedto checkboxes
+ */
+function resetAssignedTo() {
     chosenContactsForNewTask = [];
     document.getElementById('ContainerForAllChosenContacts').innerHTML = ``;
 }
 
-// getAllInputs(event);getConfirmationScreen()
+/**
+ * This function sends the form
+ * @param {*} event 
+ */
 async function handleFormSubmission(event) {
-    debugger
     try {
         event.preventDefault();
         await getAllInputs(event);
@@ -106,12 +118,21 @@ async function handleFormSubmission(event) {
     }
 }
 
+/**
+ * This function shows the confirmation screen for 2 sec
+ */
 async function getConfirmationScreen() {
     setTimeout(() => {
         confirmTheCreationOfATask();
     }, 2000);
 }
 
+/**
+ * This function adds contacts to a new task
+ * @param {*} contactId 
+ * @param {*} checkbox 
+ * @param {*} isChecked 
+ */
 async function newTaskAddContacts(contactId, checkbox, isChecked) {
     let contacts = await getItemContacts(checkbox);
     let contactData = contacts.find(contact => contact.user_id === contactId);
@@ -123,35 +144,18 @@ async function newTaskAddContacts(contactId, checkbox, isChecked) {
     }
 }
 
+/**
+ * This function starts the task editing process
+ * @param {*} contactId 
+ * @param {*} checkbox 
+ * @param {*} isChecked 
+ * @param {*} pickedContactArrayPos 
+ * @param {*} pickedContactValues 
+ */
 async function editingATask(contactId, checkbox, isChecked, pickedContactArrayPos, pickedContactValues) {
-    // try {
-    //     allTasksFromServer = await loadTasksFromServer();
-    //     const searchedTaskId = loadedTask.id;
-    //     const taskNo = allTasksFromServer.findIndex(task => task.id === searchedTaskId);
-    //     currentTaskFromServer = allTasksFromServer[taskNo];
-    //     pickedContactArrayPos = currentTaskFromServer.contacts.findIndex(contacts => String(contacts) === String(contactId));
-    //     pickedContactValues = allTasksFromServer[pickedContactArrayPos];
-    //     if (isChecked) {
-    //         addChosenContact(currentTaskFromServer, contactId);
-    //     } else {
-    //         deleteContactFromArray(currentTaskFromServer, contactId);
-    //     }
-    //     currentTaskFromServer.contacts.sort();
-    // } catch (error) {
-    //     console.error("Fehler beim Verarbeiten des Kontakts:", error);
-    // }
-    // await updateChosenContacts(currentTaskFromServer);
-    // createCirclesToChosenContactContainer2(currentTaskFromServer);
-    // console.log(currentTaskFromServer);
-
-    // if (checkbox.checked == false) {
-    //     checkbox.checked = true;
-    // } else {
-    //     checkbox.checked = false;
-    // }
     try {
-        if(allTasksFromServer.length != 0){}
-        else{
+        if (allTasksFromServer.length != 0) { }
+        else {
             allTasksFromServer = await loadTasksFromServer();
             const searchedTaskId = loadedTask.id;
             const taskNo = allTasksFromServer.findIndex(task => task.id === searchedTaskId);
@@ -175,9 +179,12 @@ async function editingATask(contactId, checkbox, isChecked, pickedContactArrayPo
     } else {
         checkbox.checked = false;
     }
-    // TaskFromVariable = true;
 }
 
+/**
+ * This function updates all chosen contacts for a task
+ * @param {*} currentTaskFromServer 
+ */
 async function updateChosenContacts(currentTaskFromServer) {
     let contactIds = currentTaskFromServer.contacts;
     let adress = 'ContainerForAllChosenContacts';
@@ -191,6 +198,11 @@ async function updateChosenContacts(currentTaskFromServer) {
     displaydiv();
 }
 
+/**
+ * This function creats the circles with the initials for the contacts
+ * @param {*} singleContact 
+ * @param {*} adress 
+ */
 async function creatingCircleForEdit2(singleContact, adress) {
     let firstLetterName = gettingInitialsForEdit(singleContact).firstLetterName;
     let firstLetterLastname = gettingInitialsForEdit(singleContact).firstLetterLastname;
@@ -200,6 +212,11 @@ async function creatingCircleForEdit2(singleContact, adress) {
     `;
 }
 
+/**
+ * This function updates the task in the backend
+ * @param {*} id 
+ * @param {*} editedTask 
+ */
 async function updateTask(id, editedTask) {
     try {
         let tokenData = localStorage.getItem('Data');
@@ -225,7 +242,6 @@ async function updateTask(id, editedTask) {
 
 /**
  * Displays the edit task popup with the details of the specified task.
- *
  * @param {string} taskId - The ID of the task to be edited.
  */
 async function showEditTask(taskId) {
@@ -248,7 +264,6 @@ async function createCirclesToChosenContactContainer2(task) {
     let Content = document.getElementById(`${adress}`);
     Content.innerHTML = '';
     let contacts = await getItemContacts("contacts");
-
     for (let j = 0; j < task.contacts.length; j++) {
         let singleContact = await getSingleContact(contacts, task, j);
         creatingCircleForEdit(singleContact, adress);
@@ -276,17 +291,22 @@ async function creatingCircleForEdit(singleContact, adress) {
  * @returns the first letter of the first and the last name for the displayed circle
  */
 function gettingInitialsForEdit(contact) {
-    //changed for AddTask
     let name = contact.username;
     let nameParts = name.split("_")
     let firstname = nameParts[0];
     let lastname = nameParts[1];
-    
     firstLetterName = firstname.toUpperCase().slice(0, 1);
     firstLetterLastname = lastname.toUpperCase().slice(0, 1);
     return { firstLetterName, firstLetterLastname };
 }
 
+/**
+ * This function loads a single Contact from a list of contacts
+ * @param {*} contacts 
+ * @param {*} task 
+ * @param {*} j 
+ * @returns the contact
+ */
 async function getSingleContact(contacts, task, j) {
     let idOfContact = task.contacts[j];
     let contact = contacts.find(contact => contact.user_id === idOfContact);
@@ -295,7 +315,6 @@ async function getSingleContact(contacts, task, j) {
 
 /**
  * Changes the status of a subtask and updates the task's progress.
- *
  * @param {HTMLInputElement} status - The checkbox element representing the subtask status.
  * @param {number} subtaskId - The unique identifier of the subtask.
  * @param {number} taskId - The unique identifier of the task containing the subtask.
@@ -308,18 +327,28 @@ async function changeSubtaskStatus(status, subtaskId, taskId) {
     updateTask(taskId, task);
 }
 
+/**
+ * This function starts the updated process of editing a task
+ * @param {*} taskToEditId 
+ */
 async function handleButtonClick(taskToEditId) {
     let tasks = await loadTasksFromServer();
     let taskToEdit = tasks.find(task => task.id === taskToEditId);
-    taskToEdit.contacts = [];
-    debugger
-    taskToEdit.contacts = currentTaskFromServer.contacts;
+    let oldContacts = taskToEdit.contacts;
+    if (currentTaskFromServer) {
+        taskToEdit.contacts = [];
+        taskToEdit.contacts = currentTaskFromServer.contacts;
+    }
     taskToEdit.subtasks = newSubtasks;
     updateTask(taskToEdit.id, taskToEdit);
     editTask(taskToEdit.id);
     loadedTask = "";
 }
 
+/**
+ * This function saves the subtasks to a new task
+ * @param {*} subtasks 
+ */
 function saveSubtaskInTaskToEdit(subtasks) {
     newSubtasksForServer = subtasks;
 }
@@ -341,10 +370,9 @@ async function getAllContacts() {
  * This function checks, if a checkbox was checked, if so it will be checked after reopening the dropdown-menu
  */
 function checkIfCheckboxesWereChecked(firstloadedContacts) {
-// changed for addTask
-    if (typeof task != "undefined") {        
+    if (typeof task != "undefined") {
         for (let j = 0; j < task.contacts.length; j++) {
-            if(currentTaskFromServer){
+            if (currentTaskFromServer) {
                 task.contacts = currentTaskFromServer.contacts;
             }
             let id = task.contacts[j];
@@ -361,7 +389,9 @@ function checkIfCheckboxesWereChecked(firstloadedContacts) {
     }
 }
 
-
+/**
+ * This function checks, if a checkbox was already checked
+ */
 function checkIfCheckboxesWereChecked2() {
     if (chosenContactsForNewTask.length > 0 && loadContactsAgain == true) {
         for (let i = 0; i < chosenContactsForNewTask.length; i++) {
@@ -381,9 +411,6 @@ function closecontacts() {
     document.getElementById('assignedToImg').src = "/Frontend/assets/img/arrow_up.png"
     document.getElementById('ContainerForAllPossibleContacts').innerHTML = '';
     document.getElementById('ContainerForAllPossibleContacts').classList.add('d-none');
-    // if (chosenContacts.length == 0) {
-    //     document.getElementById('ContainerForAllChosenContacts').classList.add('d-none');
-    // }
     loadContactsAgain = true;
     getContactsfromNewTask();
     document.getElementById('assignedToSelect').setAttribute('z-index', '0');
@@ -391,6 +418,9 @@ function closecontacts() {
     checkScreenWidth();
 }
 
+/**
+ * This function loads the contacts of a new task
+ */
 async function getContactsfromNewTask() {
     document.getElementById('ContainerForAllChosenContacts').classList.remove('d-none');
     let adress = 'ContainerForAllChosenContacts';
@@ -412,7 +442,6 @@ async function getContactsfromNewTask() {
 
 /**
  * Handles the search functionality as the user types, filtering tasks based on the entered search term.
- *
  * @param {Event} e - The input event object.
  */
 async function searchByLetter(e) {
@@ -426,9 +455,12 @@ async function searchByLetter(e) {
     renderTasks(searchedTasks);
 }
 
-function checkIfUserIsLoggedIn(){
+/**
+ * This function checks if a User is already Logged in
+ */
+function checkIfUserIsLoggedIn() {
     let loggedIn = localStorage.getItem("Data");
-    if(!loggedIn){
+    if (!loggedIn) {
         window.location.href = 'index.html';
     }
 }
