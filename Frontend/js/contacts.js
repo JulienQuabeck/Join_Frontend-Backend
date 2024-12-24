@@ -57,15 +57,6 @@ function handleLetterChange(currentAlphabetLetter, newLetter, contactOverview) {
 }
 
 /**
- * Calculates the contact initials based on name parts.
- * @param {Array} nameParts - The parts of the contact's name.
- * @returns {string} - The calculated initials.
- */
-function calculateContactInitials(nameParts) {
-  return `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`;
-}
-
-/**
  * Handles the last group and closes it if needed.
  * @param {string} currentAlphabetLetter - The current name group.
  * @param {HTMLElement} contactOverview - The element where contacts are rendered.
@@ -147,28 +138,6 @@ function unselectOtherContactItems(clickedItem) {
   });
 }
 
-
-/**
- * closes contact detail view and returns to contact book when viewed on mobile device
- */
-function returnToContactBook() {
-  let contactOverview = document.getElementById("contactOverview");
-  let contactPageRightHeaderResponsive = document.getElementById("contactPageRightHeaderResponsive");
-  let contactDetailsView = document.getElementById("contactDetailsView");
-  let responsiveContactDetailBack = document.getElementById("responsiveContactDetailBack");
-  let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
-  let responsiveEditContactButton = document.getElementById("responsiveEditContactButton");
-  let editDeleteButton = document.getElementById("editDeleteButtonPopUp");
-  contactOverview.setAttribute('style', 'display:flex !important');
-  contactPageRightHeaderResponsive.setAttribute('style', 'display:none');
-  contactDetailsView.style.display = "none";
-  responsiveContactDetailBack.style.display = "none";
-  responsiveAddContactButton.style.display = "flex";
-  responsiveEditContactButton.style.display = "none";
-  editDeleteButton.style.display = "none";
-  renderContactBook();
-}
-
 /**
  * Opens the pop-up for adding a new contact.
  * @param {string} name - The name of the contact.
@@ -194,57 +163,6 @@ function addContact() {
 }
 
 /**
- * Function for adding new contact
- */
-async function createContact() {
-  let name = document.getElementById("name").value;
-  let email = document.getElementById("email").value;
-  let phone = document.getElementById("phone").value;
-  let saveButton = document.getElementById("saveButton");
-  createLoadingAnimation(saveButton);
-  setTimeout(async function () {
-    let newContact = {
-      Name: name,
-      email: email,
-      phone: phone,
-      color: generateRandomColor(),
-    };
-    saveContactsToServer(newContact)
-  }, 1000);
-}
-
-/**
- * Adds a new contact to the contacts array and renders the contact book.
- * @param {Object} newContact - The new contact to be added.
- */
-async function addContactAndRender(newContact) {
-  await contacts.push(newContact);
-  await setItemContacts("contacts", JSON.stringify(contacts));
-  await renderContactBook();
-}
-
-/**
- * Finds the index of a contact in the sorted contacts array.
- * @param {Object} contactToFind - The contact to find in the array.
- * @returns {number} - The index of the contact in the sorted array.
- */
-function findContactIndex(contactToFind) {
-  let sortedContacts = sortContactsAlphabetically();
-  return sortedContacts.findIndex(contact =>
-    contact.Name === contactToFind.name && contact.email === contactToFind.email && contact.phone === contactToFind.phone
-  );
-}
-
-/**
- * Generates a random hex color.
- * @returns {string} - Random hex color.
- */
-function generateRandomColor() {
-  let randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
-  return randomColor;
-}
-
-/**
  * Displays a confirmation message and hides it.
  */
 function showConfirmationMessage() {
@@ -255,87 +173,167 @@ function showConfirmationMessage() {
   }, 1500);
 }
 
-/**
- * Closes the pop-up and shows the confirmation message.
- */
-function closePopUpWithConfirmation() {
-  showConfirmationMessage();
-  closePopUp();
-}
+//  /** Calculates the contact initials based on name parts.
+//  * @param {Array} nameParts - The parts of the contact's name.
+//  * @returns {string} - The calculated initials.
+//  */
+// function calculateContactInitials(nameParts) {
+//   return `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`;
+// }
 
-/**
- * Saves the edited contact information, updates the contact book, and shows the edited contact details.
- */
-async function saveEditedContact() {
-  let editedName = document.getElementById("editName").value;
-  let editedLastname = document.getElementById("editLastname").value;
-  let editedEmail = document.getElementById("editEmail").value;
-  let editedPhone = document.getElementById("editPhone").value;
-  let selectedContactItem = document.querySelector(".selectedContact");
-  let data = localStorage.getItem('Data');
-  let idAsText = JSON.parse(data);
-  let id = idAsText.id;
-  let updatedContact = {
-    username: `${editedName}_${editedLastname}`,
-    email: editedEmail,
-    phone: editedPhone,
-  }
-  let saveEditButton = document.getElementById("saveEditButton");
-  createLoadingAnimation(saveEditButton);
-  try {
-    const response = await fetch(`http://127.0.0.1:8000/user/${id}/`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(updatedContact),
-    });
+// /**
+//  * Closes the pop-up and shows the confirmation message.
+//  */
+// function closePopUpWithConfirmation() {
+//   showConfirmationMessage();
+//   closePopUp();
+// }// evtl. löschen
+
+// /**
+//  * Saves the edited contact information, updates the contact book, and shows the edited contact details.
+//  */
+// async function saveEditedContact() {
+//   let editedName = document.getElementById("editName").value;
+//   let editedLastname = document.getElementById("editLastname").value;
+//   let editedEmail = document.getElementById("editEmail").value;
+//   let editedPhone = document.getElementById("editPhone").value;
+//   let selectedContactItem = document.querySelector(".selectedContact");
+//   let data = localStorage.getItem('Data');
+//   let idAsText = JSON.parse(data);
+//   let id = idAsText.id;
+//   let updatedContact = {
+//     username: `${editedName}_${editedLastname}`,
+//     email: editedEmail,
+//     phone: editedPhone,
+//   }
+//   let saveEditButton = document.getElementById("saveEditButton");
+//   createLoadingAnimation(saveEditButton);
+//   try {
+//     const response = await fetch(`http://127.0.0.1:8000/user/${id}/`, {
+//       method: "PUT",
+//       headers: {
+//         "Content-Type": "application/json",
+//       },
+//       body: JSON.stringify(updatedContact),
+//     });
     
-    if (!response.ok) {
-      throw new Error(`Failed to update contact: ${response.status}`);
-    }
-  } catch (error) {
-    console.error("Failed to update contact on the server:", error);
-  }
-  closePopUp();
-  renderContactBook();
-  showContactDetails(selectedContactItem.id);
-  resetSaveButton(saveEditButton);
-}
+//     if (!response.ok) {
+//       throw new Error(`Failed to update contact: ${response.status}`);
+//     }
+//   } catch (error) {
+//     console.error("Failed to update contact on the server:", error);
+//   }
+//   closePopUp();
+//   renderContactBook();
+//   showContactDetails(selectedContactItem.id);
+//   resetSaveButton(saveEditButton);
+// } //evtl. löschen
 
-/**
- * Deletes the selected contact, updates the contacts array, and re-renders the contact book.
- */
-async function deleteContact() {
-  let selectedContactItem = document.querySelector(".selectedContact");
-  let detailView = document.getElementById("contactDetailsView");
-  let editDeleteButton = document.getElementById("editDeleteButtonPopUp");
-  if (selectedContactItem) {
-    let contactItemId = selectedContactItem.id;
-    let index = parseInt(contactItemId.split('_')[1]);
-    let contact_id = contacts[index].id
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/contact/${contact_id}/`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`Failed to delete contact: ${response.status}`);
-      }
-      console.log("Contact successfully deleted");
-    } catch (error) {
-      console.error("Failed to update contact on the server:", error);
-    }
-    await setItemContacts("contacts", JSON.stringify(contacts));
-  }
-}
+// /**
+//  * Deletes the selected contact, updates the contacts array, and re-renders the contact book.
+//  */
+// async function deleteContact() {
+//   let selectedContactItem = document.querySelector(".selectedContact");
+//   let detailView = document.getElementById("contactDetailsView");
+//   let editDeleteButton = document.getElementById("editDeleteButtonPopUp");
+//   if (selectedContactItem) {
+//     let contactItemId = selectedContactItem.id;
+//     let index = parseInt(contactItemId.split('_')[1]);
+//     let contact_id = contacts[index].id
+//     try {
+//       const response = await fetch(`http://127.0.0.1:8000/contact/${contact_id}/`, {
+//         method: "DELETE",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       });
+//       if (!response.ok) {
+//         throw new Error(`Failed to delete contact: ${response.status}`);
+//       }
+//       console.log("Contact successfully deleted");
+//     } catch (error) {
+//       console.error("Failed to update contact on the server:", error);
+//     }
+//     await setItemContacts("contacts", JSON.stringify(contacts));
+//   }
+// }//evtl. löschen
 
-/**
- * shows edit and delete contact button in responsive mode and hides it
- */
-function toggleEditDeleteButtonPopUp() {
-  let popUp = document.getElementById('editDeleteButtonPopUp');
-  popUp.style.display = (popUp.style.display === 'block') ? 'none' : 'block';
-}
+// /**
+//  * shows edit and delete contact button in responsive mode and hides it
+//  */
+// function toggleEditDeleteButtonPopUp() {
+//   let popUp = document.getElementById('editDeleteButtonPopUp');
+//   popUp.style.display = (popUp.style.display === 'block') ? 'none' : 'block';
+// }//evtl. löschen
+
+// /**
+//  * Function for adding new contact
+//  */
+// async function createContact() {
+//   let name = document.getElementById("name").value;
+//   let email = document.getElementById("email").value;
+//   let phone = document.getElementById("phone").value;
+//   let saveButton = document.getElementById("saveButton");
+//   createLoadingAnimation(saveButton);
+//   setTimeout(async function () {
+//     let newContact = {
+//       Name: name,
+//       email: email,
+//       phone: phone,
+//       color: generateRandomColor(),
+//     };
+//     saveContactsToServer(newContact)
+//   }, 1000);
+// }//evtl. löschen
+
+// /**
+//  * Adds a new contact to the contacts array and renders the contact book.
+//  * @param {Object} newContact - The new contact to be added.
+//  */
+// async function addContactAndRender(newContact) {
+//   await contacts.push(newContact);
+//   await setItemContacts("contacts", JSON.stringify(contacts));
+//   await renderContactBook();
+// }//evtl. löschen
+
+// /**
+//  * Finds the index of a contact in the sorted contacts array.
+//  * @param {Object} contactToFind - The contact to find in the array.
+//  * @returns {number} - The index of the contact in the sorted array.
+//  */
+// function findContactIndex(contactToFind) {
+//   let sortedContacts = sortContactsAlphabetically();
+//   return sortedContacts.findIndex(contact =>
+//     contact.Name === contactToFind.name && contact.email === contactToFind.email && contact.phone === contactToFind.phone
+//   );
+// }//evtl. löschen
+
+// /**
+//  * Generates a random hex color.
+//  * @returns {string} - Random hex color.
+//  */
+// function generateRandomColor() {
+//   let randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+//   return randomColor;
+// } //evtl. löschen, wird von createContact verwendet
+
+// /**
+//  * closes contact detail view and returns to contact book when viewed on mobile device
+//  */
+// function returnToContactBook() {
+//   let contactOverview = document.getElementById("contactOverview");
+//   let contactPageRightHeaderResponsive = document.getElementById("contactPageRightHeaderResponsive");
+//   let contactDetailsView = document.getElementById("contactDetailsView");
+//   let responsiveContactDetailBack = document.getElementById("responsiveContactDetailBack");
+//   let responsiveAddContactButton = document.getElementById("responsiveAddContactButton");
+//   let responsiveEditContactButton = document.getElementById("responsiveEditContactButton");
+//   let editDeleteButton = document.getElementById("editDeleteButtonPopUp");
+//   contactOverview.setAttribute('style', 'display:flex !important');
+//   contactPageRightHeaderResponsive.setAttribute('style', 'display:none');
+//   contactDetailsView.style.display = "none";
+//   responsiveContactDetailBack.style.display = "none";
+//   responsiveAddContactButton.style.display = "flex";
+//   responsiveEditContactButton.style.display = "none";
+//   editDeleteButton.style.display = "none";
+//   renderContactBook();
+// }// evtl. löschen

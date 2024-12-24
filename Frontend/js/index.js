@@ -7,7 +7,6 @@ async function initEntry() {
     await loadUsers();
     animateStartLogo();
     renderLogIn();
-    setCurrentUsername('');
 }
 
 /**
@@ -31,13 +30,14 @@ async function signUp(password) {
     let email = document.getElementById('email').value;
     let phone = document.getElementById('phone').value;
     let color = generateRandomColor();
-    users = {
-        username: `${name}_${lastname}`,
-        email: email,
-        password: password,
-        phone: phone,
-        color: color,
-    }
+    users = createUser(name, lastname, email, phone, color);
+    // users = {
+    //     username: `${name}_${lastname}`,
+    //     email: email,
+    //     password: password,
+    //     phone: phone,
+    //     color: color,
+    // }
     const success = await addUserToServer(users);
     if (success) {
         toggleClass('sign-up-confirmation', 'fly-in');
@@ -46,6 +46,26 @@ async function signUp(password) {
             renderLogIn();
         }, 800);
     }
+} // kommentar löschen
+
+/**
+ * This function generates a new User after signup
+ * @param {*} name Firstname of the user
+ * @param {*} lastname Lastname of the user
+ * @param {*} email Mailadress of the user
+ * @param {*} phone Phonenumber of the user
+ * @param {*} color random gnerated colorcode for thhe user circle with the initials
+ * @returns user obj.
+ */
+function createUser(name, lastname, email, phone, color){
+    let users = {
+        username: `${name}_${lastname}`,
+        email: email,
+        password: password,
+        phone: phone,
+        color: color,
+    }
+    return users;
 }
 
 /**
@@ -69,7 +89,7 @@ async function addUserToServer(users) {
     } catch (error) {
         console.error("Failed to push task on the server:", error);
     }
-}
+} //fehlende Auth. ?! muss aber immer erlaubt sein
 
 /**
  * This function generates a new color-code for the circles
@@ -125,35 +145,6 @@ async function searchForUserInBackend(data) {
 function saveDataInLocalStorage(responseData) {
     let dataAsText = JSON.stringify(responseData);
     localStorage.setItem('Data', dataAsText);
-}
-
-/**
- * Tries to find the data from the backend that matches his login data.
- * @param {} emailInput - Input field for email when loggin in.
- * @param {} passwordInput - Input field for password when loggin in.
- */
-function findUser(emailInput, passwordInput) {
-    let user = users.find(u => u.email === emailInput.value && u.password === passwordInput.value);
-    if (user) {
-        setCurrentUsername(user.name);
-        window.location.href = 'summary.html';
-    } else {
-        toggleClass('error-message', 'hide');
-    }
-}
-
-/**
- * Checks if the value of the password's input field and the value of the comfirm password's field are equal.
- */
-async function validatePassword(event) {
-    event.preventDefault();
-    let password = document.getElementById('password').value;
-    let confirmPassword = document.getElementById('confirm-password').value;
-    if (password === confirmPassword) {
-        await signUp(password);
-    } else {
-        toggleClass('password-message', 'hide');
-    }
 }
 
 /**
@@ -377,3 +368,32 @@ function signUpFormTemplate() {
         </p>
     `;
 }
+
+/**
+ * Tries to find the data from the backend that matches his login data.
+ * @param {} emailInput - Input field for email when loggin in.
+ * @param {} passwordInput - Input field for password when loggin in.
+ */
+// function findUser(emailInput, passwordInput) {
+//     let user = users.find(u => u.email === emailInput.value && u.password === passwordInput.value);
+//     if (user) {
+//         setCurrentUsername(user.name);
+//         window.location.href = 'summary.html';
+//     } else {
+//         toggleClass('error-message', 'hide');
+//     }
+// }
+
+/**
+ * Checks if the value of the password's input field and the value of the comfirm password's field are equal.
+ */
+// async function validatePassword(event) {
+//     event.preventDefault();
+//     let password = document.getElementById('password').value;
+//     let confirmPassword = document.getElementById('confirm-password').value;
+//     if (password === confirmPassword) {
+//         await signUp(password);
+//     } else {
+//         toggleClass('password-message', 'hide');
+//     }
+// }

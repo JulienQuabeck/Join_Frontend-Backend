@@ -61,17 +61,7 @@ async function getAllInputs(e) {
         console.error("Invalid date format. Expected YYYY-MM-DD.");
         return;
     }
-    const task = {
-        'title': title,
-        'description': description ? description : "no description",
-        'date': date,
-        'priority': prio ? prio : 2,
-        'subtasks': subtasks,
-        'subtasksProgress': 0,
-        'category': category,
-        'colum': column ? column : 'todo',
-        'contacts': assignedTo,
-    }
+    const task = creatingTask(title, description, date, prio, subtasks, category, column, assignedTo);
     try {
         let tokenData = localStorage.getItem('Data');
         let tokenDataAsText = JSON.parse(tokenData);
@@ -92,6 +82,32 @@ async function getAllInputs(e) {
     }
     clearForm();
     resetAssignedTo();
+}
+
+/**
+ * This function generates a new task obj.
+ * @param {*} title Title of the task
+ * @param {*} description description of the task
+ * @param {*} date due date of the task
+ * @param {*} prio prio of the task
+ * @param {*} subtasks additional subtasks
+ * @param {*} category category of the task
+ * @param {*} column colum the task is in
+ * @param {*} assignedTo all contacts which are necessary to complete the task
+ * @returns 
+ */
+function creatingTask(title, description, date, prio, subtasks, category, column, assignedTo){
+    return {
+        'title': title,
+        'description': description ? description : "no description",
+        'date': date,
+        'priority': prio ? prio : 2,
+        'subtasks': subtasks,
+        'subtasksProgress': 0,
+        'category': category,
+        'colum': column ? column : 'todo',
+        'contacts': assignedTo,
+    }
 }
 
 /**
@@ -172,6 +188,10 @@ async function editingATask(contactId, checkbox, isChecked, pickedContactArrayPo
     } catch (error) {
         console.error("Fehler beim Verarbeiten des Kontakts:", error);
     }
+    updateingChosenContacts(currentTaskFromServer, checkbox);
+}
+
+async function updateingChosenContacts(currentTaskFromServer, checkbox){
     await updateChosenContacts(currentTaskFromServer);
     createCirclesToChosenContactContainer2(currentTaskFromServer);
     if (checkbox.checked == false) {

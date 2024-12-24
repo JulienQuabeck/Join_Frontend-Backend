@@ -175,8 +175,7 @@ function generateEditContactHtml(contact) {
  * @param {Object} contact - The contact object containing information.
  * @returns {string} - The HTML string representing the contact.
  */
-async function generateContactHtml(contact_id, contactData) {
-    // load contact    
+async function generateContactHtml(contact_id, contactData) {  
     let singleContact = contactData.find(contactData => contactData.user_id === contact_id); 
     let name = singleContact.username;
     let nameparts = name.split('_');
@@ -262,7 +261,6 @@ function generatePriorityText(priority) {
             return 'Medium';
         case 1:
             return 'Urgent';
-        // Handle unexpected cases, if any
         default:
             return 'Unknown Priority';
     }

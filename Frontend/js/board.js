@@ -18,13 +18,11 @@ async function initBoard() {
     checkIfUserIsLoggedIn();
     checkLogInStatus();
     await init('board', 'task_from');
-    // await loadTasks();
     let allTasks = await loadTasksFromServer();
     tasks = allTasks;
     searchOnTyping();
     renderTasks();    
 }
-
 
 /**
  * Renders tasks in the 'todo' column.
@@ -191,11 +189,9 @@ editedTask = [];
  * @param {string} subtaskId - Die ID der zu löschenden Teilaufgabe.
  */
 async function deleteSubtask(taskId, subtaskId) {
-    // const task = getTask(taskId);
     const task = await loadSingleTask(taskId);
     loadedTask = task;
-    task.subtasks = task.subtasks.filter(subtask => subtask.id !== subtaskId);   // hier wird die subtask gelöscht
-    // subtask auch aus loadedTask löschen
+    task.subtasks = task.subtasks.filter(subtask => subtask.id !== subtaskId);
     showSubtasksInEdit(taskId, task.subtasks);
 }
 
@@ -222,7 +218,6 @@ async function updateSingleElemete(id, updatedData){
         console.error("Server Error Details:", errorDetails);
         throw new Error(`Failed to update task: ${response.status}`);
       }
-      //console.log("task successfully updated");
     } catch (error) {
       console.error("Failed to update task on the server:", error);
     }
@@ -380,7 +375,6 @@ function handleEditPriority(priority) {
  * @returns {string} - Background color for the button.
  */
 function setEditButtonBackground(idButton) {
-    // Implement your background color logic here
     switch (idButton) {
         case 'low':
             return '#7AE229';

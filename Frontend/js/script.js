@@ -13,7 +13,6 @@ async function init(id) {
     lockScreenOrientation();
 }
 
-
 /**
  * Renders dynamic content in into the static html structures.
  */
@@ -29,16 +28,6 @@ async function includeHTML() {
             element.innerHTML = 'Page not found';
         }
     }
-}
-
-/**
- * Stores data in backend.
- * @param {string} key - The name which the data is saved with.
- * @param {string} value - The data which is supposed to be saved.
- */
-async function setItem(key, value) {
-    const payload = { key, value, token: STORAGE_TOKEN };
-    fetch(STORAGE_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json());
 }
 
 /**
@@ -133,20 +122,29 @@ function checkLogInStatus() {
 }
 
 /**
- * Sets the current username in the session storage.
- * @param {string} username - The currently loggin in user's username.
- */
-function setCurrentUsername(username) {
-    sessionStorage.setItem('data', username);
-}
-
-/**
  * Gets the current username from session storage.
  * @returns Item with the key "current-username" from session storage.
  */
 function getCurrentUsername() {
-    let currentUsername = sessionStorage.getItem('current-username');
+    let currentUserData = localStorage.getItem('Data');
+    let currentUserDataAsText = JSON.parse(currentUserData);    
+    let currentUsernameWith_ = currentUserDataAsText.username
+    let firstname = splitNames(currentUsernameWith_).firstName;
+    let lastname = splitNames(currentUsernameWith_).lastName;
+    let currentUsername = firstname + " " + lastname;    
     return currentUsername;
+}
+
+/**
+ * This function splits the username in a first and a lastname
+ * @param {*} username Username from localStorage
+ * @returns obj. with first- and lastname
+ */
+function splitNames(username){
+    let nameparts = username.split('_');
+    let firstName = nameparts[0];
+    let lastName = nameparts[1];
+    return {firstName, lastName}
 }
 
 /**
@@ -205,7 +203,7 @@ async function loadUserData() {
             ${calculateContactInitials(data.username.split("_"))}
         </div>
     `;
-}
+} //kürzen
 
 /**
  * Calculates the contact initials based on name parts.
@@ -214,7 +212,7 @@ async function loadUserData() {
  */
 function calculateContactInitials(nameParts) {
     return `${nameParts[0].charAt(0)}${nameParts[nameParts.length - 1].charAt(0)}`;
-  }
+  } // doppelt drin in contact.js
 
 /**
  * Opens the pop-up for editing a contact.
@@ -307,3 +305,21 @@ function generateEditHTML() {
     </div>
     `;
 }
+
+// /**
+//  * Stores data in backend.
+//  * @param {string} key - The name which the data is saved with.
+//  * @param {string} value - The data which is supposed to be saved.
+//  */
+// async function setItem(key, value) {
+//     const payload = { key, value, token: STORAGE_TOKEN };
+//     fetch(STORAGE_URL, { method: 'POST', body: JSON.stringify(payload) }).then(res => res.json());
+// }
+
+// /**
+//  * Sets the current username in the session storage.
+//  * @param {string} username - The currently loggin in user's username.
+//  */
+// function setCurrentUsername(username) {
+//     sessionStorage.setItem('data', username);
+// }

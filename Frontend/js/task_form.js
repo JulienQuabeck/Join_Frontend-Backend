@@ -9,7 +9,7 @@ async function initAddTask() {
     await init('add-task');
     minDate();
     choosePrio(2);
-    await loadContactsFromServer();    
+    await loadContactsFromServer();
 }
 
 /** changes the HTML back to standard (=no Prio chosen)
@@ -39,16 +39,16 @@ function resetPrio() {
  * @param {int} currentchosenPrio - safe the current chosen Priority in int (like above)
  */
 function changeItoPrioInString(Prio, i) {
-        if (i == 1) {
-            Prio = 'High';
-        } else if (i == 2) {
-            Prio = 'Medium';
-        } else {
-            Prio = 'Low';
-        }
-        currentchosenPrio = i;
-        changeColorOfPrio(Prio, i);
+    if (i == 1) {
+        Prio = 'High';
+    } else if (i == 2) {
+        Prio = 'Medium';
+    } else {
+        Prio = 'Low';
     }
+    currentchosenPrio = i;
+    changeColorOfPrio(Prio, i);
+}
 
 /** Reset the HTML and changes the color and the image for the chosen Prio
  * @param {int} i - gives the function the Prio in int (1 = Urgent / 2 = Medium / 3 = Low Priority)
@@ -119,7 +119,7 @@ function addSubtask() {
         document.getElementById('buttons').setAttribute('style', "margin-top:0");
         subtasks.push(taskJSON);
         showSubtasksafterAddingATask();
-        if (subtasks.length != 0){
+        if (subtasks.length != 0) {
             document.getElementById('buttonsAndInfotext').style.marginTop = "150px";
         }
     }
@@ -164,7 +164,7 @@ function deleteSubtaskInEdit(i) {
         document.getElementById('subTaskList').setAttribute('style', "overflow-y:hidden");
     }
     showSubtasks();
-    if (subtasks.length == 0){
+    if (subtasks.length == 0) {
         document.getElementById('buttonsAndInfotext').style.marginTop = "20px";
     }
 }
@@ -174,9 +174,9 @@ function deleteSubtaskInEdit(i) {
  * @param {*} chosenContactsJson 
  * @returns 
  */
-async function collectAllPk(chosenContactsJson){
-    pks= []
-    for (i = 0; i < chosenContactsJson.length; i++){
+async function collectAllPk(chosenContactsJson) {
+    pks = []
+    for (i = 0; i < chosenContactsJson.length; i++) {
         pk = chosenContactsJson[i]['id'];
         pks.push(pk)
     }
@@ -216,7 +216,7 @@ function clearForm() {
 /**
  * This function resets the AssignedTo-section
  */
-function resetAssignedTo(){
+function resetAssignedTo() {
     chosenContactsForNewTask = [];
     document.getElementById('ContainerForAllChosenContacts').innerHTML = ``;
 }
@@ -278,7 +278,7 @@ function setCategory(category) {
 function getAllCategories() {
     document.getElementById('categories').classList.toggle('d-none');
     document.getElementById('overlayCategories').classList.toggle('d-none');
-    if (window.innerWidth < 1400){
+    if (window.innerWidth < 1400) {
         document.getElementById("CategoryInputContainer").style.marginBottom = "90px";
     }
 }

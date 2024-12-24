@@ -74,7 +74,6 @@ function openOverlay() {
 function checkCheckbox(contactId, event){
     event.stopImmediatePropagation();
     event.preventDefault();
-    debugger
     const checkbox = document.getElementById(`checkbox${contactId}`);
     addContactToArray(contactId);
 }
@@ -185,27 +184,63 @@ function filterContacts() {
  * @param {string} search - The name the user wants to search for
  * @param {HTML} ContactList - List of names that contain the searched character string
  */
-function HtmlForFilter(search, ContactList){
+async function HtmlForFilter(search, ContactList){
     for (let i = 0; i < contacts.length; i++) {
         let adress = `contactCircle${i}`;
-        let name = contacts[i]['Name'];
+        let name = contacts[i]['username'];
         if (name.toLowerCase().includes(search)) {
-            ContactList.innerHTML += `
-            <div id="contact${contacts[i].id}" class="contactbox contact">
-                <div id="contactCircle${contacts[i].id}">
-                </div>
-                <div>
-                    <div id="ContactName${contacts[i].id}" class="contactName">
-                        ${contacts[i]['Name']}
-                    </div>
-                </div>
-                <div id="checkboxContainer${contacts[i].id}" class="checkboxContainer">
-                    <input id="checkbox${contacts[i].id}" type="checkbox" class="checkboxes hover">
-                </div>
-            </div>`;
-            creatingCircle(i, adress);
+            ContactList.innerHTML += creatingHTMLforContactFilter(contacts, i);            
+            await creatingCircleForFilter(i, adress, contacts);
         }
     }
+}//muss überarbeitet werden
+
+/**
+ * This function creates the circle at the "assigned to" Container
+ * @param {int} i - the position of the contact in the Json-Array
+ * @param {string} adress - carries the information about the id, where the Circle should be displayed
+ */
+async function creatingCircleForFilter(i, adress, contacts, ChangeCircles) {
+    let contact = await getItemContacts();
+    if(ChangeCircles === true){
+        let j = contact.findIndex(contact => contact.id === i); 
+        i = j;
+        ChangeCircles = false;
+    }
+    let name = contact[i].username;
+    let nameParts = name.split("_")
+    let firstname = nameParts[0];
+    let lastname = nameParts[1];
+    let firstLetterName = gettingInitials(firstname);
+    let firstLetterLastname = gettingInitials(lastname);
+    let color = contacts[i]['color'];
+    debugger
+    console.log(adress);
+    document.getElementById(`${adress}`).innerHTML += `
+    <div id="circle${contacts[i].username}" class="circle" style="background-color:${color}">${firstLetterName}${firstLetterLastname}</div>
+    `;
+}
+
+/**
+ * This function generates the HTML for the filter in the assignedTo Section
+ * @param {*} contacts contact data
+ * @param {*} i counter for for-loop
+ * @returns HTML
+ */
+function creatingHTMLforContactFilter(contacts, i){
+    return `
+            <div id="contact${contacts[i].user_id}" class="contactbox contact">
+                <div id="contactCircle${contacts[i].user_id}">
+                </div>
+                <div>
+                    <div id="ContactName${contacts[i].user_id}" class="contactName">
+                        ${contacts[i]['username']}
+                    </div>
+                </div>
+                <div id="checkboxContainer${contacts[i].user_id}" class="checkboxContainer">
+                    <input id="checkbox${contacts[i].user_id}" type="checkbox" class="checkboxes hover">
+                </div>
+            </div>`;
 }
 
 // /**
@@ -225,7 +260,21 @@ async function generatingHTMLForContactsContainer() {
     contacts = await getItemContacts();    
     for (let i = 0; i < contacts.length; i++) {
         let adress = `contactCircle${contacts[i].user_id}`;
-        contactsContainer.innerHTML += `
+        contactsContainer.innerHTML += creatingHTML(contacts, i);
+        creatingCircle(i, adress);
+        gettingNames(i, contacts);
+    }
+    checkIfCheckboxesWereChecked(firstloadContacts);
+}
+
+/**
+ * This function generates the HTML for all assignedTo contacts
+ * @param {*} contacts contact data
+ * @param {*} i counter for 'for-loop
+ * @returns HTML
+ */
+function creatingHTML(contacts, i){
+    return `
         <div id="contact${contacts[i].id}" class="contactbox contact">
             <div id="contactCircle${contacts[i].user_id}"> 
             </div>
@@ -236,10 +285,6 @@ async function generatingHTMLForContactsContainer() {
                 <input id="checkbox${contacts[i].user_id}" type="checkbox" class="checkboxes hover" onclick="event.stopPropagation(); checkCheckbox(${contacts[i].user_id}, event)">
             </div>
         </div>`;
-        creatingCircle(i, adress);
-        gettingNames(i, contacts);
-    }
-    checkIfCheckboxesWereChecked(firstloadContacts);
 }
 
 /**

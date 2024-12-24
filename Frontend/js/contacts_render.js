@@ -61,18 +61,6 @@ function closeLetterGroup(contactOverview) {
 }
 
 /**
-* Generates HTML for the "Add new contact" button.
-*/
-function renderAddContactButton() {
-    let addContactButtonHTML = `
-      <button id="addContactButton" onclick="addContact()">
-        Add new contact <img src="/Frontend/assets/img/add-contact.png" alt="add contact image">
-      </button>
-    `;
-    return addContactButtonHTML;
-}
-
-/**
  * Renders the detailed view of a contact, including name, buttons, and contact information.
  * @param {Object} contact - The contact information.
  * @param {boolean} toEdit - True if in edit mode.
@@ -144,7 +132,6 @@ function renderEditDeleteButtons() {
     `;
 }
 
-
 /**
  * Creates a loading animation for the save button, disabling it and displaying a loader.
  * @param {HTMLElement} saveButton - The save button element.
@@ -154,7 +141,6 @@ function createLoadingAnimation(saveButton) {
     saveButton.style.justifyContent = 'center';
     saveButton.innerHTML = '<div class="loader"></div>';
 }
-
 
 /**
  * Resets the save button after loading animation, enabling it and setting the default content.
@@ -166,3 +152,15 @@ function resetSaveButton(saveButton) {
     saveButton.innerHTML = 'Create Contact <img src="/Frontend/assets/img/check.png" alt="confirm icon">';
     saveButton.style.justifyContent = 'space-between';
 }
+
+// /**
+// * Generates HTML for the "Add new contact" button.
+// */
+// function renderAddContactButton() {
+//     let addContactButtonHTML = `
+//       <button id="addContactButton" onclick="addContact()">
+//         Add new contact <img src="/Frontend/assets/img/add-contact.png" alt="add contact image">
+//       </button>
+//     `;
+//     return addContactButtonHTML;
+// }
