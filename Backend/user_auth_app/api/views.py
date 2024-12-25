@@ -45,6 +45,7 @@ class UserProfileList(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 class RegistrationView(ViewSet):
+    permission_classes = [AllowAny]
     
     def create(self, request):
         serializer = RegistrationSerializer(data=request.data)
@@ -59,41 +60,21 @@ class RegistrationView(ViewSet):
     
 class CustomLoginView(ObtainAuthToken):
     permission_classes = [AllowAny]
-    
-    # def post(self, request):
-    #     serializer = self.serializer_class(data=request.data)
-    #     data = {}
-    #     if serializer.is_valid():
-    #         user = serializer.validated_data['user']
-    #         token, created = Token.objects.get_or_create(user=user)
-    #         data = {
-    #             'token': token.key,
-    #             'id': user.id,
-    #             'username': user.username,
-    #             'email': user.email
-    #         }
-    #     else:
-    #         data = serializer.errors
 
-    #     return Response(data)
     def post(self, request):
-        # Hole die Email und das Passwort aus der Anfrage
         email = request.data.get("email")
         password = request.data.get("password")
 
         try:
-            # Suche den Benutzer anhand der E-Mail
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             return Response(
                 {"error": "Invalid email or password."},
                 status=status.HTTP_401_UNAUTHORIZED
             )
-        
-        # Authentifiziere den Benutzer mit dem gefundenen username und Passwort
+    
         user = authenticate(username=user.username, password=password)
         if user:
-            # Token generieren oder holen
             token, created = Token.objects.get_or_create(user=user)
             data = {
                 'token': token.key,

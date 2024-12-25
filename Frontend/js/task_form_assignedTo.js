@@ -186,14 +186,14 @@ function filterContacts() {
  */
 async function HtmlForFilter(search, ContactList){
     for (let i = 0; i < contacts.length; i++) {
-        let adress = `contactCircle${i}`;
+        let adress = `contactCircle${contacts[i]['user_id']}`;
         let name = contacts[i]['username'];
         if (name.toLowerCase().includes(search)) {
             ContactList.innerHTML += creatingHTMLforContactFilter(contacts, i);            
             await creatingCircleForFilter(i, adress, contacts);
         }
     }
-}//muss überarbeitet werden
+}
 
 /**
  * This function creates the circle at the "assigned to" Container
@@ -214,8 +214,6 @@ async function creatingCircleForFilter(i, adress, contacts, ChangeCircles) {
     let firstLetterName = gettingInitials(firstname);
     let firstLetterLastname = gettingInitials(lastname);
     let color = contacts[i]['color'];
-    debugger
-    console.log(adress);
     document.getElementById(`${adress}`).innerHTML += `
     <div id="circle${contacts[i].username}" class="circle" style="background-color:${color}">${firstLetterName}${firstLetterLastname}</div>
     `;
