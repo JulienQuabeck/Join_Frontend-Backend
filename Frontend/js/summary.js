@@ -2,6 +2,7 @@ let sumToDos = 0;
 let sumDone = 0;
 let sumInProgress = 0;
 let sumAwaitFeedback = 0;
+let allTasksToCount = []
 
 /**
  * Initializes certain functions once the body of the page has fully loaded.
@@ -18,7 +19,7 @@ async function initSummary() {
     sortTasks();
     renderUpcomingPrio(tasks);
     renderUpcomingDate(tasks);
-    renderTasksInBoard();
+    renderTasksInBoard(tasks);
     renderTasksInProgress();
     renderTasksAwaitingFeedback();
 }
@@ -32,7 +33,6 @@ async function loadTasksFromServer(){
     let tasks = await fetch(url);
     const rawResponse = await tasks.text();
     return JSON.parse(rawResponse);
-    
 }
 
 /**
@@ -71,7 +71,7 @@ function renderWelcomeMessage() {
 /**
  * Renders the total amount of tasks on the board.
  */
-function renderTasksInBoard() {
+function renderTasksInBoard(allTasks) {
     let tasksInBoard = document.getElementById('tasks-amount');
     let tasksAmount = allTasks.length; //tasks --> allTasks
     tasksInBoard.innerHTML = tasksAmount;
