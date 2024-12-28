@@ -12,8 +12,8 @@ async function initAddTask() {
     await loadContactsFromServer();
 }
 
-/** changes the HTML back to standard (=no Prio chosen)
- * 
+/** 
+ * changes the HTML back to standard (=no Prio chosen)
  */
 function resetPrio() {
     firstloadedContacts = false;

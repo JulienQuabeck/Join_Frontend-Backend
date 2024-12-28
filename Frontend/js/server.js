@@ -96,7 +96,7 @@ async function getAllInputs(e) {
  * @param {*} assignedTo all contacts which are necessary to complete the task
  * @returns 
  */
-function creatingTask(title, description, date, prio, subtasks, category, column, assignedTo){
+function creatingTask(title, description, date, prio, subtasks, category, column, assignedTo) {
     return {
         'title': title,
         'description': description ? description : "no description",
@@ -191,7 +191,7 @@ async function editingATask(contactId, checkbox, isChecked, pickedContactArrayPo
     updateingChosenContacts(currentTaskFromServer, checkbox);
 }
 
-async function updateingChosenContacts(currentTaskFromServer, checkbox){
+async function updateingChosenContacts(currentTaskFromServer, checkbox) {
     await updateChosenContacts(currentTaskFromServer);
     createCirclesToChosenContactContainer2(currentTaskFromServer);
     if (checkbox.checked == false) {
@@ -343,7 +343,13 @@ async function changeSubtaskStatus(status, subtaskId, taskId) {
     let tasks = await loadTasksFromServer();
     let task = tasks.find(tasks => tasks.id === taskId);
     let subtaskPos = task.subtasks.findIndex(subtasks => subtasks.id === subtaskId);
-    task.subtasks[subtaskPos].done = true;
+    if (task.subtasks[subtaskPos].done == false) {
+        task.subtasks[subtaskPos].done = true;
+        task.subtasksProgress++;
+    } else {
+        task.subtasks[subtaskPos].done = false;
+        task.subtasksProgress--;
+    }
     updateTask(taskId, task);
 }
 
@@ -359,11 +365,32 @@ async function handleButtonClick(taskToEditId) {
         taskToEdit.contacts = [];
         taskToEdit.contacts = currentTaskFromServer.contacts;
     }
-    taskToEdit.subtasks = newSubtasks;
+    if (newSubtasks.length > 0) {
+        taskToEdit.subtasks = newSubtasks;
+    }
     updateTask(taskToEdit.id, taskToEdit);
     editTask(taskToEdit.id);
     loadedTask = "";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * This function saves the subtasks to a new task

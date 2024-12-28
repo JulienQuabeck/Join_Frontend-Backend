@@ -564,7 +564,7 @@ function renderCard(task, column) {
  */
 function setProgressSubtasks(task) {
     let progressDone = document.getElementById(`progress${task.id}`);
-    let finalValue = task.subtasksProgress * 10;
+    let finalValue = task.subtasksProgress * 10; //num of finished tasks      
     let max = task.subtasks.length * 10;
     let progressInPercent = (finalValue / max) * 100;
     progressDone.style.width = `${progressInPercent.toString()}%`;
