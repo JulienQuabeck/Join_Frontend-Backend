@@ -1,6 +1,18 @@
 let allTasks = [];
 let column = '';
 let allSubtasks = [];
+let initials = "";
+
+function gettingInitialsForHeader(){
+    let Data = localStorage.getItem('Data');
+    let DataAsString = JSON.parse(Data);
+    let name = DataAsString.username;
+    let nameParts = splitNames(name);
+    let firstLetterName = nameParts.firstName.toUpperCase().slice(0, 1);
+    let firstLetterLastname = nameParts.lastName.toUpperCase().slice(0, 1);
+    initials = firstLetterName+firstLetterLastname;
+    document.getElementById('initials').innerHTML = initials;
+}
 
 /**
  * Initializes certain functions once the body of the page has fully loaded.
@@ -11,6 +23,7 @@ async function init(id) {
     checkLogInStatus();
     changeNavigationHighlight(id);
     lockScreenOrientation();
+    gettingInitialsForHeader();
 }
 
 /**
