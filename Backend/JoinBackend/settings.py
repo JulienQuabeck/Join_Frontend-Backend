@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-2lkix#^^y89r1oozr)g$6=x*o5v+08_k+52@w)#09tz_1z$2_4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'julien-quabeck.de', 'join.julien-quabeck.de']
 
 
 # Application definition
@@ -60,6 +60,10 @@ CSRF_TRUSTED_ORIGINS = [
 
   'http://localhost:5500',
 
+  'https://julien-quabeck.de/',
+
+  'https://join.julien-quabeck.de/',
+
 ]
 
 
@@ -68,6 +72,10 @@ CORS_ALLOWED_ORIGINS = [
   'http://127.0.0.1:5500',
 
   'http://localhost:5500',
+
+  'https://julien-quabeck.de/',
+
+  'https://join.julien-quabeck.de/',
 
 ]
 

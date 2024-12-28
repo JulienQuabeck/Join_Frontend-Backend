@@ -144,6 +144,7 @@ async function loadSingleTask(taskId){
     let tokenData = localStorage.getItem('Data');
     let tokenDataAsText = JSON.parse(tokenData);
     const token = tokenDataAsText.token;
+    // const url = `http://127.0.0.1:8000/task/${taskId}/`;
     const url = `http://127.0.0.1:8000/task/${taskId}/`;
     try{
         let response = await fetch(url, {

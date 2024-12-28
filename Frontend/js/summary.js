@@ -32,6 +32,7 @@ async function loadTasksFromServer(){
     let tasks = await fetch(url);
     const rawResponse = await tasks.text();
     return JSON.parse(rawResponse);
+    
 }
 
 /**
