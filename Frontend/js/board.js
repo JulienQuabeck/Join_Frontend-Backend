@@ -179,9 +179,9 @@ async function editTask(taskId) {
  * This function clears some Vars
  */
 function clearVar(){
-chosenContactsFromTask = [];
-newSubtasks = [];
-editedTask = [];
+    chosenContactsFromTask = [];
+    newSubtasks = [];
+    editedTask = [];
 }
 
 /**
@@ -194,6 +194,7 @@ async function deleteSubtask(taskId, subtaskId) {
     loadedTask = task;
     task.subtasks = task.subtasks.filter(subtask => subtask.id !== subtaskId);
     showSubtasksInEdit(taskId, task.subtasks);
+    setNewSubtasks(task.subtasks);//evtl. wieder löschen
 }
 
 /**
@@ -325,6 +326,7 @@ async function addSubtaskInEdit(e, taskId) {
     subtaskInput.value = '';
     showSubtasksInEdit(taskId, task.subtasks);
     saveSubtaskInTaskToEdit(taskId, task.subtasks);
+    setNewSubtasks(task.subtasks);//evtl. wieder löschen
 }
 
 /**
@@ -368,6 +370,7 @@ function handleEditPriority(priority) {
     button.style.color = 'white';
     button.style.background = background;
     img.src = `/Frontend/assets/img/board/prio-${idButton}-white.svg`;
+    setNewPrio(priority);
 }
 
 /**

@@ -4,6 +4,9 @@ let newSubtasksForServer = [];
 let newContactsForServer = [];
 let loadContactsAgain;
 let editingTask;
+let newPrio;
+let newContacts;
+let newSubtasklist;
 
 /**
  * This function loads all tasks from the server
@@ -185,6 +188,7 @@ async function editingATask(contactId, checkbox, isChecked, pickedContactArrayPo
             deleteContactFromArray(currentTaskFromServer, contactId);
         }
         currentTaskFromServer.contacts.sort();
+        setNewContacts(currentTaskFromServer.contacts);
     } catch (error) {
         console.error("Fehler beim Verarbeiten des Kontakts:", error);
     }
@@ -273,6 +277,7 @@ async function showEditTask(taskId) {
     taskPopUp.innerHTML = generateEditTaskHtml(task, contacts);
     handleEditPriority(task.priority);
     showSubtasksInEdit(task.id, task.subtasks);
+    setNewSubtasks(task.subtasks);//evtl. wieder löschen
     createCirclesToChosenContactContainer2(task);
 }
 
@@ -358,19 +363,57 @@ async function changeSubtaskStatus(status, subtaskId, taskId) {
  * @param {*} taskToEditId 
  */
 async function handleButtonClick(taskToEditId) {
+    // let tasks = await loadTasksFromServer();
+    // let taskToEdit = tasks.find(task => task.id === taskToEditId);
+    // let oldContacts = taskToEdit.contacts;
+    // if (currentTaskFromServer) {
+    //     taskToEdit.contacts = [];
+    //     taskToEdit.contacts = currentTaskFromServer.contacts;
+    // }
+    // if (newSubtasks.length > 0) {
+    //     taskToEdit.subtasks = newSubtasks;
+    // }
+    // updateTask(taskToEdit.id, taskToEdit);
+    // editTask(taskToEdit.id);
+    // loadedTask = "";
     let tasks = await loadTasksFromServer();
     let taskToEdit = tasks.find(task => task.id === taskToEditId);
-    let oldContacts = taskToEdit.contacts;
-    if (currentTaskFromServer) {
-        taskToEdit.contacts = [];
-        taskToEdit.contacts = currentTaskFromServer.contacts;
-    }
-    if (newSubtasks.length > 0) {
-        taskToEdit.subtasks = newSubtasks;
-    }
-    updateTask(taskToEdit.id, taskToEdit);
-    editTask(taskToEdit.id);
-    loadedTask = "";
+    let newTitle = document.getElementById('edit-title').value;
+    let newDescription = document.getElementById('edit-description').value;
+    let newDueDate = document.getElementById('edit-date').value;
+    let newPrioNo = newPrio;
+    let newContactsForTask = newContacts;
+    let newSubtasksForTask = newSubtasklist;//muss noch eingebaut werden
+    console.log(newSubtasksForTask);
+    debugger
+    //neue task erstellen und updaten
+}
+
+/**
+ * This function sets the new Prio for saving the task
+ * @param {*} newPrioNo the number of the chosen prio
+ */
+function setNewPrio(newPrioNo) {
+    newPrio = newPrioNo;
+}
+
+/**
+ * This function sets the new Contacts for saving the task 
+ * @param {*} newContactsFromEditTask array of all chosen Contacts
+ */
+function setNewContacts(newContactsFromEditTask){
+    newContacts = newContactsFromEditTask;
+}
+
+/**
+ * This function sets the new Subtasks for saving the task 
+ * @param {*} newSubtaskList List of new Subtasks
+ */
+function setNewSubtasks(list){
+    newSubtasklist = [];
+    newSubtasklist = list;
+    console.log(newSubtasklist);
+    
 }
 
 

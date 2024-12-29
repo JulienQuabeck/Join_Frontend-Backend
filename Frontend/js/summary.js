@@ -210,3 +210,46 @@ function chooseMessage(welcomeMessage, usernameWrapper, username, time) {
     }
     usernameWrapper.innerHTML = username;
 }
+
+/**
+ * Saves the edited contact information, updates the contact book, and shows the edited contact details.
+ */
+async function saveEditedContact() {
+    let tokenData = localStorage.getItem('Data');
+    let tokenDataAsText = JSON.parse(tokenData);
+    const token = tokenDataAsText.token;
+    let editedName = document.getElementById("editName").value;
+    let editedLastname = document.getElementById("editLastname").value;
+    let editedEmail = document.getElementById("editEmail").value;
+    let editedPhone = document.getElementById("editPhone").value;
+    let selectedContactItem = document.querySelector(".selectedContact");
+    let data = localStorage.getItem('Data');
+    let idAsText = JSON.parse(data);
+    let id = idAsText.id;
+    let updatedContact = {
+      username: `${editedName}_${editedLastname}`,
+      email: editedEmail,
+      phone: editedPhone,
+    }
+    let saveEditButton = document.getElementById("saveEditButton");
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/user/${id}/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Token ${token}`,
+        },
+        body: JSON.stringify(updatedContact),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to update contact: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Failed to update contact on the server:", error);
+    }
+    closePopUp();
+    renderContactBook();
+    showContactDetails(selectedContactItem.id);
+    resetSaveButton(saveEditButton);
+  } //evtl. löschen
