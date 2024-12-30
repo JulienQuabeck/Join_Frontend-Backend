@@ -196,7 +196,7 @@ async function deleteSubtask(taskId, subtaskId) {
     }
     task.subtasks = task.subtasks.filter(subtask => subtask.id !== subtaskId);
     showSubtasksInEdit(taskId, task.subtasks);
-    setNewSubtasks(task.subtasks);//evtl. wieder löschen
+    setNewSubtasksAfterDelete(task.subtasks);//evtl. wieder löschen
 }
 
 /**
@@ -264,6 +264,7 @@ async function showEditSubtaskField(taskId, subtaskId) {
     listItem.classList.add('edit-subtask-item-text');
     if (editedTask) {
         newTask = editedTask;
+        newTask.subtasks = newSubtasklist;
     } else {
         const task = await loadSingleTask(taskId);
         newTask = task;
@@ -285,7 +286,8 @@ async function showEditSubtaskField(taskId, subtaskId) {
         console.error('List item not found for editing subtask.');
     }
     editedSubtask.push(listOfSubtasks[ArrayPosition]);
-    listOfSubtasks.splice(ArrayPosition, 1);
+    //listOfSubtasks.splice(ArrayPosition, 1);
+    editedSubtaskId = subtaskId;    
 }
 
 /**
@@ -295,15 +297,25 @@ async function showEditSubtaskField(taskId, subtaskId) {
  * @param {string} subtaskId - The ID of the subtask.
  */
 async function editSubtaskText(taskId, subtaskId) {
+    // let input = document.getElementById('edit-subtask-text-input');
+    // listOfSubtasks = [...listOfSubtasks, ...editedSubtask];
+    // editedTask.subtasks = listOfSubtasks;
+    // editedSubtask = [];
+    // listOfSubtasks = [];
+    // let subtaskIndex = editedTask.subtasks.findIndex(sb => sb.id === Number(subtaskId)); // -1
+    // if (subtaskIndex !== -1) {
+    //     editedTask.subtasks[subtaskIndex].name = input.value;
+    //     showSubtasksInEdit(taskId, editedTask.subtasks);
+    //     setNewSubtasks(taskId, subtaskId, input);
+    // } else {
+    //     console.error('Subtask not found for editing.');
+    // }
     let input = document.getElementById('edit-subtask-text-input');
-    listOfSubtasks = [...listOfSubtasks, ...editedSubtask];
-    editedTask.subtasks = listOfSubtasks;
-    editedSubtask = [];
-    listOfSubtasks = [];
-    let subtaskIndex = editedTask.subtasks.findIndex(sb => sb.id === Number(subtaskId)); // -1
+    let subtaskIndex = newSubtasklist.findIndex(sb => sb.id === Number(subtaskId)); // -1
     if (subtaskIndex !== -1) {
-        editedTask.subtasks[subtaskIndex].name = input.value;
-        showSubtasksInEdit(taskId, editedTask.subtasks);
+        newSubtasklist[subtaskIndex].name = input.value;
+        showSubtasksInEdit(taskId, newSubtasklist);
+        //setNewSubtasks(taskId, subtaskId, input);
     } else {
         console.error('Subtask not found for editing.');
     }
@@ -328,7 +340,7 @@ async function addSubtaskInEdit(e, taskId) {
     subtaskInput.value = '';
     showSubtasksInEdit(taskId, task.subtasks);
     saveSubtaskInTaskToEdit(taskId, task.subtasks);
-    setNewSubtasks(task.subtasks);//evtl. wieder löschen
+    // setNewSubtasks(task.subtasks);//evtl. wieder löschen
 }
 
 /**

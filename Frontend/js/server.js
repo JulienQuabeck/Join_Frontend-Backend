@@ -7,7 +7,7 @@ let editingTask;
 let newPrio;
 let newContacts;
 let newSubtasklist;
-
+let editedSubtaskId;
 /**
  * This function loads all tasks from the server
  * @returns tasks
@@ -277,8 +277,17 @@ async function showEditTask(taskId) {
     taskPopUp.innerHTML = generateEditTaskHtml(task, contacts);
     handleEditPriority(task.priority);
     showSubtasksInEdit(task.id, task.subtasks);
-    setNewSubtasks(task.subtasks);//evtl. wieder löschen
+    setSubtasksArray(task.subtasks);//evtl. wieder löschen
     createCirclesToChosenContactContainer2(task);
+    newEditSubtasks(task);
+}
+
+function setSubtasksArray(subtasks) {
+    newSubtasklist = subtasks;
+}
+
+function newEditSubtasks(task) {
+    newSubtasklist = task.subtasks;
 }
 
 /**
@@ -383,9 +392,9 @@ async function handleButtonClick(taskToEditId) {
     let newDueDate = document.getElementById('edit-date').value;
     let newPrioNo = newPrio;
     let newContactsForTask = newContacts;//muss noch implementiert werden
-    if (newContacts){
+    if (newContacts) {
         newContactsForTask = newContacts;
-    }else{
+    } else {
         newContactsForTask = taskToEdit.contacts;
     }
     let newSubtasksForTask = newSubtasklist;
@@ -418,7 +427,7 @@ function setNewPrio(newPrioNo) {
  * This function sets the new Contacts for saving the task 
  * @param {*} newContactsFromEditTask array of all chosen Contacts
  */
-function setNewContacts(newContactsFromEditTask){
+function setNewContacts(newContactsFromEditTask) {
     newContacts = newContactsFromEditTask;
 }
 
@@ -426,9 +435,13 @@ function setNewContacts(newContactsFromEditTask){
  * This function sets the new Subtasks for saving the task 
  * @param {*} newSubtaskList List of new Subtasks
  */
-function setNewSubtasks(list){
-    newSubtasklist = [];
-    newSubtasklist = list;    
+function setNewSubtasks(taskId, subtaskId, input) {
+    let subtaskIndex = newSubtasklist.findIndex(st => st.id === editedSubtaskId);
+    newSubtasklist[subtaskIndex].name = input.value;  
+}
+
+function setNewSubtasksAfterDelete(list){
+    newSubtasklist = list;
 }
 
 
@@ -569,3 +582,47 @@ function checkIfUserIsLoggedIn() {
         window.location.href = 'index.html';
     }
 }
+
+
+/**
+ * Saves the edited contact information, updates the contact book, and shows the edited contact details.
+ */
+async function saveEditedContact() {
+    let tokenData = localStorage.getItem('Data');
+    let tokenDataAsText = JSON.parse(tokenData);
+    const token = tokenDataAsText.token;
+    let editedName = document.getElementById("editName").value;
+    let editedLastname = document.getElementById("editLastname").value;
+    let editedEmail = document.getElementById("editEmail").value;
+    let editedPhone = document.getElementById("editPhone").value;
+    let selectedContactItem = document.querySelector(".selectedContact");
+    let data = localStorage.getItem('Data');
+    let idAsText = JSON.parse(data);
+    let id = idAsText.id;
+    let updatedContact = {
+      username: `${editedName}_${editedLastname}`,
+      email: editedEmail,
+      phone: editedPhone,
+    }
+    let saveEditButton = document.getElementById("saveEditButton");
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/user/${id}/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Token ${token}`,
+        },
+        body: JSON.stringify(updatedContact),
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Failed to update contact: ${response.status}`);
+      }
+    } catch (error) {
+      console.error("Failed to update contact on the server:", error);
+    }
+    closePopUp();
+    renderContactBook();
+    showContactDetails(selectedContactItem.id);
+    resetSaveButton(saveEditButton);
+  } //evtl. löschen
