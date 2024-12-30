@@ -21,7 +21,7 @@ async function initBoard() {
     let allTasks = await loadTasksFromServer();
     tasks = allTasks;
     searchOnTyping();
-    renderTasks();    
+    renderTasks();
 }
 
 /**
@@ -99,16 +99,16 @@ function search(e) {
  * Opens the task pop-up by setting its display style to "flex" and populates it with HTML content.
  */
 async function openTask(taskId) {
-    let task = tasks.find(t => t.id === taskId);    
+    let task = tasks.find(t => t.id === taskId);
     loadedTask = task;
     let taskPopUp = document.getElementById('pop-up');
     taskPopUp.style.display = "flex";
-    try{
+    try {
         const taskHtml = await generateTaskHtml(task);
         taskPopUp.innerHTML = taskHtml;
         document.body.style.overflow = 'hidden';
-        chosenContactsFromTask = task.contacts;        
-    }catch (error){
+        chosenContactsFromTask = task.contacts;
+    } catch (error) {
         console.error("Error generating task HTML", error);
         taskPopUp.innerHTML = `<p>Error loading task details. Please try again later.</p>`
     }
@@ -117,7 +117,7 @@ async function openTask(taskId) {
 /**
  * This function loads all Contacts
  */
-function getAllContacts2(){
+function getAllContacts2() {
     flipTheImage();
     displayContacts();
     generateContactsContainer();
@@ -128,7 +128,7 @@ function getAllContacts2(){
 /**
  * This function checks, if a checkbox was already checked or not
  */
-function checkIfCheckboxesWereChecked2(){
+function checkIfCheckboxesWereChecked2() {
     for (let j = 0; j < chosenContactsFromTask.length; j++) {
         let id = chosenContactsFromTask[j];
         document.getElementById(`checkbox${id}`).checked = true;
@@ -140,16 +140,16 @@ function checkIfCheckboxesWereChecked2(){
  * @param {*} taskId  = id of the task
  * @returns the single task as JSON
  */
-async function loadSingleTask(taskId){
+async function loadSingleTask(taskId) {
     let tokenData = localStorage.getItem('Data');
     let tokenDataAsText = JSON.parse(tokenData);
     const token = tokenDataAsText.token;
     // const url = `http://127.0.0.1:8000/task/${taskId}/`;
     const url = `http://127.0.0.1:8000/task/${taskId}/`;
-    try{
+    try {
         let response = await fetch(url, {
-            method:'GET',
-            headers:{
+            method: 'GET',
+            headers: {
                 'Content-Type': 'application/json',
                 "Authorization": `Token ${token}`,
             },
@@ -159,7 +159,7 @@ async function loadSingleTask(taskId){
         }
         const rawResponse = await response.text();
         return JSON.parse(rawResponse);
-    } catch(error){
+    } catch (error) {
         console.error("Error fetching task: ", error);
     }
 }
@@ -178,7 +178,7 @@ async function editTask(taskId) {
 /**
  * This function clears some Vars
  */
-function clearVar(){
+function clearVar() {
     chosenContactsFromTask = [];
     newSubtasks = [];
     editedTask = [];
@@ -190,8 +190,10 @@ function clearVar(){
  * @param {string} subtaskId - Die ID der zu löschenden Teilaufgabe.
  */
 async function deleteSubtask(taskId, subtaskId) {
-    const task = await loadSingleTask(taskId);
-    loadedTask = task;
+    if (!loadedTask) {
+        const task = await loadSingleTask(taskId);
+        loadedTask = task;
+    }
     task.subtasks = task.subtasks.filter(subtask => subtask.id !== subtaskId);
     showSubtasksInEdit(taskId, task.subtasks);
     setNewSubtasks(task.subtasks);//evtl. wieder löschen
@@ -202,26 +204,26 @@ async function deleteSubtask(taskId, subtaskId) {
  * @param {*} id task id
  * @param {*} updatedData the new data
  */
-async function updateSingleElemete(id, updatedData){
+async function updateSingleElemete(id, updatedData) {
     try {
         let tokenData = localStorage.getItem('Data');
         let tokenDataAsText = JSON.parse(tokenData);
         const token = tokenDataAsText.token;
         const response = await fetch(`http://127.0.0.1:8000/task/${id}/`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Token ${token}`,
-          },
-          body: JSON.stringify(updatedData),
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${token}`,
+            },
+            body: JSON.stringify(updatedData),
         });
-      if (!response.ok) {
-        const errorDetails = await response.json();
-        console.error("Server Error Details:", errorDetails);
-        throw new Error(`Failed to update task: ${response.status}`);
-      }
+        if (!response.ok) {
+            const errorDetails = await response.json();
+            console.error("Server Error Details:", errorDetails);
+            throw new Error(`Failed to update task: ${response.status}`);
+        }
     } catch (error) {
-      console.error("Failed to update task on the server:", error);
+        console.error("Failed to update task on the server:", error);
     }
 }
 
@@ -260,9 +262,9 @@ async function showEditSubtaskField(taskId, subtaskId) {
     let listItem = document.getElementById(`edit-subtask-item${subtaskId}`);
     listItem.classList.remove('edit-subtask-item');
     listItem.classList.add('edit-subtask-item-text');
-    if(editedTask){
+    if (editedTask) {
         newTask = editedTask;
-    }else{
+    } else {
         const task = await loadSingleTask(taskId);
         newTask = task;
     }
@@ -295,7 +297,7 @@ async function showEditSubtaskField(taskId, subtaskId) {
 async function editSubtaskText(taskId, subtaskId) {
     let input = document.getElementById('edit-subtask-text-input');
     listOfSubtasks = [...listOfSubtasks, ...editedSubtask];
-    editedTask.subtasks=listOfSubtasks;
+    editedTask.subtasks = listOfSubtasks;
     editedSubtask = [];
     listOfSubtasks = [];
     let subtaskIndex = editedTask.subtasks.findIndex(sb => sb.id === Number(subtaskId)); // -1
@@ -409,20 +411,20 @@ async function deleteTask(id) {
         let tokenData = localStorage.getItem('Data');
         let tokenDataAsText = JSON.parse(tokenData);
         const token = tokenDataAsText.token;
-      const response = await fetch(`http://127.0.0.1:8000/task/${id}/`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Token ${token}`,
-        },
-      });
-    if (!response.ok) {
-      throw new Error(`Failed to delete contact: ${response.status}`);
-    }
+        const response = await fetch(`http://127.0.0.1:8000/task/${id}/`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Token ${token}`,
+            },
+        });
+        if (!response.ok) {
+            throw new Error(`Failed to delete contact: ${response.status}`);
+        }
 
-  } catch (error) {
-    console.error("Failed to update task on the server:", error);
-  }
+    } catch (error) {
+        console.error("Failed to update task on the server:", error);
+    }
 }
 
 /**
@@ -532,7 +534,7 @@ function clearAllColumns() {
  * Iterates through an array of columns and checks each column for tasks. If a column has no tasks, a no tasks card is generated and appended.
  * @param {Array<HTMLElement>} columns - An array of column elements to iterate through.
  */
-function iterateByEachColumn(columns) { 
+function iterateByEachColumn(columns) {
     for (let i = 0; i < columns.length; i++) {
         let el = columns[i];
         checkColumnForTasks(el);

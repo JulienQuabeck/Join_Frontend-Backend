@@ -293,15 +293,16 @@ function generateEditSubtaskTextHtml(taskId, subtaskId, text) {
     return /*html*/ `
         <input type="text" id="edit-subtask-text-input" value="${text}">
         <div class="edit-subtask-text-icons">
-            <button onclick="deleteSubtask('${taskId}', '${subtaskId}')">
-                <img src="/Frontend/assets/img/board/delete-subtask-icon.svg" alt="Delete Icon">
-            </button>
+
             <button onclick="editSubtaskText('${taskId}', '${subtaskId}')">
                 <img src="/Frontend/assets/img/board/check-edit-subtask.svg" alt="Check Icon">
             </button>
         </div>
     `;
 }
+{/* <button onclick="deleteSubtask('${taskId}', '${subtaskId}')">
+<img src="/Frontend/assets/img/board/delete-subtask-icon.svg" alt="Delete Icon">
+</button> */}
 
 /**
  * Generates the HTML for a no tasks card.

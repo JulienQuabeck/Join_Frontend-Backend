@@ -382,11 +382,28 @@ async function handleButtonClick(taskToEditId) {
     let newDescription = document.getElementById('edit-description').value;
     let newDueDate = document.getElementById('edit-date').value;
     let newPrioNo = newPrio;
-    let newContactsForTask = newContacts;
-    let newSubtasksForTask = newSubtasklist;//muss noch eingebaut werden
-    console.log(newSubtasksForTask);
-    debugger
-    //neue task erstellen und updaten
+    let newContactsForTask = newContacts;//muss noch implementiert werden
+    if (newContacts){
+        newContactsForTask = newContacts;
+    }else{
+        newContactsForTask = taskToEdit.contacts;
+    }
+    let newSubtasksForTask = newSubtasklist;
+    let newTask = {
+        id: taskToEdit.id,
+        title: newTitle,
+        description: newDescription,
+        date: newDueDate,
+        priority: newPrioNo,
+        category: taskToEdit.category,
+        colum: taskToEdit.colum,
+        contacts: newContactsForTask,
+        subtasks: newSubtasksForTask,
+        subtasksProgress: taskToEdit.subtasksProgress
+    }
+    updateTask(taskToEdit.id, newTask);
+    editTask(taskToEdit.id);
+    loadedTask = "";
 }
 
 /**
@@ -411,9 +428,7 @@ function setNewContacts(newContactsFromEditTask){
  */
 function setNewSubtasks(list){
     newSubtasklist = [];
-    newSubtasklist = list;
-    console.log(newSubtasklist);
-    
+    newSubtasklist = list;    
 }
 
 
