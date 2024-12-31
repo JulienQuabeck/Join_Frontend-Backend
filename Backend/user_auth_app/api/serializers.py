@@ -9,11 +9,31 @@ from user_auth_app.models import UserProfile
 
 class UserProfileSerializer(serializers.ModelSerializer):
     user_id = serializers.IntegerField(source='user.id', read_only=True)
-    username = serializers.CharField(source='user.username', read_only=True)
-    email = serializers.CharField(source='user.email', read_only=True)
+    username = serializers.CharField(source='user.username', read_only=False)
+    email = serializers.CharField(source='user.email', read_only=False)
     class Meta:
         model = UserProfile
         fields = ['user_id','username','email', 'phone', 'color']
+
+    def update(self, instance, validated_data):
+        # Extrahiere die verschachtelten Daten für den User
+        user_data = validated_data.pop('user', {})
+        username = user_data.get('username')
+        email = user_data.get('email')
+
+        # Aktualisiere den verknüpften User
+        if username:
+            instance.user.username = username
+        if email:
+            instance.user.email = email
+        instance.user.save()  # Speichere die Änderungen am User
+
+        # Aktualisiere die Felder des UserProfile
+        instance.phone = validated_data.get('phone', instance.phone)
+        instance.color = validated_data.get('color', instance.color)
+        instance.save()  # Speichere die Änderungen am UserProfile
+
+        return instance
 
 class RegistrationSerializer(serializers.ModelSerializer):
     phone = serializers.IntegerField(required=False)  # Füge das Feld hinzu

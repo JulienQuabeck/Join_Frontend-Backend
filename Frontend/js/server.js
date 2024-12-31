@@ -444,25 +444,6 @@ function setNewSubtasksAfterDelete(list){
     newSubtasklist = list;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * This function saves the subtasks to a new task
  * @param {*} subtasks 
@@ -598,12 +579,14 @@ async function saveEditedContact() {
     let selectedContactItem = document.querySelector(".selectedContact");
     let data = localStorage.getItem('Data');
     let idAsText = JSON.parse(data);
+    console.log(idAsText);
     let id = idAsText.id;
     let updatedContact = {
       username: `${editedName}_${editedLastname}`,
       email: editedEmail,
       phone: editedPhone,
     }
+    updateLocalStorage(token, id, updatedContact);
     let saveEditButton = document.getElementById("saveEditButton");
     try {
       const response = await fetch(`http://127.0.0.1:8000/user/${id}/`, {
@@ -623,6 +606,16 @@ async function saveEditedContact() {
     }
     closePopUp();
     renderContactBook();
-    showContactDetails(selectedContactItem.id);
+    //showContactDetails(selectedContactItem.id);
     resetSaveButton(saveEditButton);
   } //evtl. löschen
+
+  function updateLocalStorage(token, id, updatedContact){
+    let newData = {
+        token: token,
+        id: id,
+        username: updatedContact.username,
+        email: updatedContact.email
+    }
+    localStorage.setItem('Data', JSON.stringify(newData));
+  }
